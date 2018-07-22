@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- Launch file that starts the testing nodes -->
+<launch>
+	<arg name="cpu_mode" default="false"/>
+
+	<!-- Start the fasterRCNN node, add the cpu arg if the user is in cpu mode -->
+	<node if="$(arg cpu_mode)" name="fasterRCNN" pkg="ros_faster_rcnn" type="simpleDetect.py" args="--cpu" output="screen"/>
+
+	<node unless="$(arg cpu_mode)" name="fasterRCNN1" 
+	pkg="ros_faster_rcnn" type="Detect1.2.py" 
+	args="--model ../libraries/py-faster-rcnn/data/faster_rcnn_models/myZF_faster_rcnn_final.caffemodel
+	 --prototxt ../libraries/py-faster-rcnn/models/pascal_voc/ZF/faster_rcnn_alt_opt/faster_rcnn_test.pt
+	 --cameraSubscriber /camera1/rgb/image_raw/compressed --imageWindow imageLeft"
+	 output="screen"/>
+	<node unless="$(arg cpu_mode)" name="fasterRCNN2" 
+	pkg="ros_faster_rcnn" type="Detect1.2.py" 
+	args="--model ../libraries/py-faster-rcnn/data/faster_rcnn_models/myZF_faster_rcnn_final.caffemodel
+	 --prototxt ../libraries/py-faster-rcnn/models/pascal_voc/ZF/faster_rcnn_alt_opt/faster_rcnn_test.pt
+	 --cameraSubscriber /camera2/rgb/image_raw/compressed --imageWindow imageRight"
+	 output="screen"/>
+
+</launch>

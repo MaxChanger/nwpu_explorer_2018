@@ -1,0 +1,10 @@
+# This service adds an object to the model explicitly
+
+# The object that should be added to the model
+Object object
+
+# If true, the object is mapped to the next obstacle from the perspective of the source frame
+bool map_to_next_obstacle
+---
+# The object added to the model
+Object object

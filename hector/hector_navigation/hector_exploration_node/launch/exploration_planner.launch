@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<launch>
+  
+  <!--launch-prefix="gdb -ex run ++args"-->
+
+  <node pkg="hector_exploration_node" type="exploration_planner_node" name="hector_exploration_node" output="screen">
+    
+    <param name="use_grid_map" value="true" />
+    <!--一开始是true 辉巨版没有-->
+
+    <rosparam file="$(find hector_exploration_node)/config/costmap.yaml" command="load" />
+    <!--roslaunch node 节点和rosrun node节点 的区别在于调用的这个配置文件 -->
+    <!--没有这个配置文件可能会出现inner—— 这个错误 -->
+
+  </node>
+
+  <!--node pkg="hector_exploration_controller" type="simple_exploration_controller" name="exploration_controller" output="screen"/-->
+  
+  <!--
+    可以同时把controller打开
+    但是 两个同时打开不方便调试
+    controller主要是对地盘发送速度，这个刷新频率很高，很容易把exploration_planner提示的规划信息刷新掉
+  -->
+  
+</launch>

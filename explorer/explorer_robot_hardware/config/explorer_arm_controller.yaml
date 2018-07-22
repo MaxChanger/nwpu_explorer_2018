@@ -1,0 +1,63 @@
+
+explorer_arm_controller:
+    type: "explorer_arm_controller/ArmController"
+# 这个是机械臂的名称
+# 来自urdf
+    joints:
+      - joint_front_back
+      - robot_left_right
+      - arm1_bearing_joint    # 整体旋转
+      - arm2_arm1_joint       # 底部的电机上下
+      - arm3_arm2_joint       # 小臂上下
+      - pt1_arm_joint         #第一轴向
+      - pt2_pt1_joint         #上下
+      - rotate_joint          # 转爪子
+      - paw                   # 爪子
+
+# 这个是机械臂的初始位置
+    reset:
+      arm1_bearing_joint: 0
+      arm2_arm1_joint: 0.524
+      arm3_arm2_joint: 0.349 #0.13962634 #0.0872665
+      pt1_arm_joint: 0.0 #-9.662481150589884e-05
+      pt2_pt1_joint: 0.0 #5.1337451208382845e-05
+      rotate_joint: -1.2616666666 #--------------------需要改变
+      paw: 0.34888888
+      joint_front_back: 0
+      robot_left_right: 0
+# 这是机械臂的左侧位置限制
+    left_limit:
+      arm1_bearing_joint: -0.523599833 #-2
+      arm2_arm1_joint: 0.523333333 #-1.55
+      arm3_arm2_joint: 0.3480 #-2.6---------
+      pt1_arm_joint: -1.57079643 #-1.56302
+      pt2_pt1_joint: -0.69777777 #-0.7170
+      rotate_joint: -1.57079643 #0.0
+      paw: 0.3488888888
+      joint_front_back: -1.57079643
+      robot_left_right: -1.57079643
+# 下面这些设置要与URDF中joint的limit一致//moveit need
+# (最好能改成直接读取robot_description参数的方法...但是我做不到 ps by pxq.2017)
+# 这是机械臂的右侧位置限制
+    right_limit:
+      arm1_bearing_joint: 0.34906584 #2
+      arm2_arm1_joint: 2.52944444 #1.4935
+      arm3_arm2_joint: 2.53072737 #2------------
+      pt1_arm_joint: 1.57079643 #1.0501
+      pt2_pt1_joint: 1.395555555 #0.802661
+      rotate_joint: 1.57079643
+      paw: 1.39626
+      joint_front_back: 1.57079643
+      robot_left_right: 1.57079643
+# 这个是机械臂移动的速度数据 rad/s
+    speed_limit: 
+      arm1_bearing_joint: 0.18 #0.21
+      arm2_arm1_joint: 0.1 #0.29
+      arm3_arm2_joint: 0.2 #0.29
+      pt1_arm_joint: 0.7 #0.7
+      pt2_pt1_joint: 1.0 #1.0
+      rotate_joint: 0.5 #0.5
+      paw: 0.5 #0.5
+      joint_front_back: 999 #999
+      robot_left_right: 999 #999
+
