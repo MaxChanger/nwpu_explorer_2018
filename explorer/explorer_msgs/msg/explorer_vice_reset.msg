@@ -1,0 +1,2 @@
+bool front_vice_wheel_reset
+bool back_vice_wheel_reset

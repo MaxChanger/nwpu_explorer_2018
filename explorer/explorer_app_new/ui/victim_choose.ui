@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VictimChoose</class>
+ <widget class="QWidget" name="VictimChoose">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>7</y>
+     <width>391</width>
+     <height>281</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="pushButton_activity_button">
+      <property name="text">
+       <string>Activity</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="4">
+     <widget class="QTextEdit" name="textEdit_victim_info_textEdit"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QPushButton" name="pushButton_injury_button">
+      <property name="text">
+       <string>Injury</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QPushButton" name="pushButton_no_indiction_button">
+      <property name="text">
+       <string>No Indiction</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="pushButton_no_mark_button">
+      <property name="text">
+       <string>No Mark</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

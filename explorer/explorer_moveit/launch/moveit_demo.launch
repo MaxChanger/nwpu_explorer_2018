@@ -1,0 +1,8 @@
+<launch>
+
+
+
+  <node name="explorer_moveit" pkg="explorer_moveit" type="explorer_moveit" >
+  </node>
+
+</launch>

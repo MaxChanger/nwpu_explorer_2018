@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>camera_choose.png</file>
+        <file>get_info.png</file>
+        <file>info.png</file>
+        <file>light_0.png</file>
+        <file>lightOn.png</file>
+        <file>no_info.png</file>
+        <file>refresh_pic.png</file>
+        <file>robot_close.png</file>
+        <file>robot_close_2.png</file>
+        <file>robot_launch.png</file>
+        <file>robot_setting.png</file>
+        <file>save_pic.png</file>
+        <file>setting_check.png</file>
+        <file>setting_check_2.png</file>
+        <file>Team explorer2.xcf</file>
+        <file>team log.jpg</file>
+        <file>team_log2.jpg</file>
+        <file>team_log3.jpg</file>
+        <file>team_log4.jpg</file>
+        <file>team_pic.png</file>
+        <file>th_VoiceRecorder.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,5 @@
+name: [arm1_bearing_joint, arm2_arm1_joint, arm3_arm2_joint, joint_front_back, left_down_fin_base_joint,
+  left_down_wheel_base_joint, left_up_fin_base_joint, left_up_wheel_base_joint, paw,
+  pt1_arm_joint, pt2_pt1_joint, right_down_fin_base_joint, right_down_wheel_base_joint,
+  right_up_fin_base_joint, right_up_wheel_base_joint, robot_left_right, rotate_joint]
+

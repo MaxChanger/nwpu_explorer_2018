@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- 启动机械臂moveit解算结点 -->
+<launch>
+	<!--moveit发送数据到rviz中，rviz的可视化已经取消-->
+    <node name="explorer_moveit" pkg="explorer_moveit" type="explorer_moveit" output="screen" />
+	<!--开启监听轨迹的节点-->
+	<node name="explorer_moveit_listener" pkg="explorer_moveit_listener" type="explorer_moveit_listener" output="screen" />
+	<!--开启需要规划的config中的demo-->
+	<include file = "$(find explorer_moveit_config)/launch/demo.launch" /> 
+	<!--include file = "$(find explorer_launch)/launch/client/start_robot_joy.launch" /-->
+</launch>

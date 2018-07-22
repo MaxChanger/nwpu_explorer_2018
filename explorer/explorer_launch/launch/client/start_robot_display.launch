@@ -1,0 +1,7 @@
+<?xml version="1.0"?> 
+<!-- 启动机器人rviz位置模拟器 -->
+<launch>
+	<!--include file="$(find rescue_up6)/launch/display.launch"/-->
+	<!--include file="$(find rescue_new)/launch/display.launch"/-->
+	<!-- 用于启动 _rviz_ 相关的东西 -->
+</launch>

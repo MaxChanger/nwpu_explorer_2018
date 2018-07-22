@@ -1,0 +1,13 @@
+<launch>
+    <node pkg = "explorer_pyaudio" type = "server_local.py" name = "local_listener" output = "screen" respawn = "true">
+    <param name = "address" value = "192.168.188.18" type = "string" />
+    <!-- <param name = "address" value = "127.0.0.1" type = "string" />      -->
+    <param name = "port" value = "12346" type = "int" />
+    </node>
+
+    <node pkg = "explorer_pyaudio" type = "client_local.py" name = "local_talker" output = "screen" respawn = "true">
+    <param name = "address" value = "192.168.188.123" type = "string" />
+    <!-- <param name = "address" value = "127.0.0.1" type = "string" />      -->
+    <param name = "port" value = "12345" type = "int" />
+    </node>
+</launch>

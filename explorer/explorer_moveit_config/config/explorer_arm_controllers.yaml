@@ -1,0 +1,12 @@
+controller_list:
+  - name: explorer_arm_controllers
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - arm1_bearing_joint
+      - arm2_arm1_joint
+      - arm3_arm2_joint
+      - pt1_arm_joint
+      - pt2_pt1_joint
+      - rotate_joint

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- 启动硬件控制核心结点 -->
+<launch>
+	<!-- <param name="robot_description" textfile="$(find rescue_new)/robots/rescue_new.URDF" /--> -->
+	<include file="$(find explorer_robot_hardware)/launch/start_hardware.launch"/>
+  	<!--include file="$(find explorer_moveit_config)/launch/move_group.launch" /-->
+    <!-- 野望,moveit操作机械臂 -->
+	<!--node name="explorer_joint_driver" pkg="explorer_joint_state_driver" type="explorer_joint_state"/-->
+	
+</launch>

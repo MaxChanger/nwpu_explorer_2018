@@ -1,0 +1,12 @@
+<library path="lib/libexplorer_app_new">
+  <class name="explorer_app_new/Explorer_App_New" type="explorer_app_new::Explorer_App_New" base_class_type="rqt_gui_cpp::Plugin">
+   <description>
+		explorer_app_new.
+   </description>
+   <qtgui>
+	<label>explorer_app_new</label>
+	<icon type="theme">image-x-generic</icon>
+	<statustip>this is for the exp control</statustip>
+   </qtgui>
+  </class>
+</library>

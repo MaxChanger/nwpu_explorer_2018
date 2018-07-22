@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- ATTENTION: There many modes need image information!!! But you can only use one of them by a node-->
+    <arg name="pub_qrcode_topic" default="/image_percept" />
+    <arg name="pub_image_qrcode_topic" default="/image/qrcode" />
+    <arg name="sub_image_qrcode_topic_camera1" default="/camera_left/image_raw" />
+    <!--my add-->
+    <arg name="sub_image_qrcode_topic_camera2" default="/camera_right/image_raw" />
+
+    <arg name="pub_find_qrcode_topic" default="/find_qrcode" />
+
+    <node pkg="explorer_qrcode" name="qrcode_detection" type="qrcode_detection_node">
+        <!--The topic that could added in the map-->
+        <param name="pub_qrcode_topic" value="$(arg pub_qrcode_topic)" />
+        <!-- The topic that Qrcode was devided , and be published-->
+        <param name="pub_image_qrcode_topic" value="$(arg pub_image_qrcode_topic)" />
+        <!-- The topic that this program needed -->
+        <param name="sub_image_qrcode_topic_camera1" value="$(arg sub_image_qrcode_topic_camera1)" />
+        <param name="sub_image_qrcode_topic_camera2" value="$(arg sub_image_qrcode_topic_camera2)" />
+        
+        <param name="pub_find_qrcode_topic" value="$(arg pub_find_qrcode_topic)" />
+    </node>
+
+
+</launch>

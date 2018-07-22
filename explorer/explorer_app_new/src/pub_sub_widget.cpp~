@@ -1,0 +1,14 @@
+#include "rqt_tutorial/pub_sub_widget.h"
+#include "ui_pub_sub_widget.h"
+
+PubSubWidget::PubSubWidget(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::PubSubWidget)
+{
+    ui->setupUi(this);
+}
+
+PubSubWidget::~PubSubWidget()
+{
+    delete ui;
+}

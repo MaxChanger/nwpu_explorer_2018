@@ -1,0 +1,1 @@
+controller_joint_names: ['joint_front_back', 'robot_left_right', 'arm1_bearing_joint', 'arm2_arm1_joint', 'arm3_arm2_joint', 'pt1_arm_joint', 'pt2_pt1_link', 'rorate_joint', 'left_up_fin_base_joint', 'right_up_fin_base_joint', 'right_down_fin_base_joint', 'left_down_fin_base_joint', ]

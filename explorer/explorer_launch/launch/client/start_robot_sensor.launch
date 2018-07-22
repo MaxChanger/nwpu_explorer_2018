@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<!-- 启动传感器相关节点 -->
+<launch>
+	<node name="explorer_co2_sensor" pkg="explorer_co2_sensor" type="explorer_co2_sensor" output="screen"/>
+</launch>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- 启用机器人手柄的驱动和转换节点 -->
+<launch>
+	<node name="joy" pkg="joy" type="joy_node">
+		<param name="dev" value="/dev/input/js0" />
+		<!-- value == 控制器(手柄)的串口位置 -->
+	</node>
+	<node name="explorer_joy_control" pkg="explorer_joy_control" type="explorer_joy_control" output="screen">
+		<remap from="/cmd_vel" to="/explorer_drive_controller/cmd_vel" />
+		<remap from="/explorer_vice_wheel_reset" to="/explorer_vice_wheel_controller/explorer_vice_wheel_reset" />
+		<remap from="/explorer_vice_wheel" to="/explorer_vice_wheel_controller/explorer_vice_wheel" />
+	</node>
+</launch>

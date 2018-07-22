@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<launch>
+    <!--<node name="left_camera" pkg="usb_cam" type="usb_cam_node">
+		<param name="video_device" value="/dev/video0"/>
+		<param name="image_width" value="640" />
+    	<param name="image_height" value="480" />
+		<param name="pixel_format" value="yuyv" />
+		<param name="camera_frame_id" value="camera_arm" />
+        <param name="camera_info_url" value="file:///$(find libuvc_camera)/yaml/rervision_usb500w02m_640_480.yaml" />
+		<param name="io_method" value="mmap"/>
+        <param name="framerate" value="30"/>
+        <param name="autofocus" value="true"/>
+        <remap from="/left_camera/image_raw" to="/camera1/rgb/image_raw" />
+	</node>-->
+	<include file = "$(find libuvc_camera)/launch/rervision_usbfhd01_640_480_30fps_yuyv.launch"/>
+	</node>
+</launch>
