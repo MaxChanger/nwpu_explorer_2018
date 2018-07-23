@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+	<!--打开henctor_map_server这个节点-->
+    <param name="/use_sim_time" value="false"/>
+
+    <node pkg="hector_map_server" name="hector_map_server" type="hector_map_server">
+	<!--
+         <remap from="/visualization_marker" to="/worldmodel/visualization_marker"/>
+	 <remap from="/visualization_marker_array" to="/worldmodel/visualization_marker_array"/>
+	-->
+	
+    <!--
+    <remap from="/hector_map_server/get_distance_to_obstacle" to="/get_distance_to_obstacle"/>
+	<remap from="/hector_map_server/get_loggers" to="/get_loggers"/>
+	<remap from="/hector_map_server/get_search_position" to="/get_search_position"/>
+	<remap from="/hector_map_server/set_logger_level" to="/set_logger_level"/>
+	-->
+
+	</node>
+
+</launch>

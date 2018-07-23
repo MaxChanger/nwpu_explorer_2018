@@ -2,9 +2,10 @@
 
 <launch>
   <node pkg="hector_mapping" type="hector_mapping" name="hector_height_mapping" output="screen">
-    <param name="scan_topic" value="laser0/scan" />
+    <param name="scan_topic" value="scan" />
     <param name="base_frame" value="base_stabilized" />
-    <param name="odom_frame" value="nav" />
+    <param name="odom_frame" value="base_stabilized" />
+    <!--里程计-->
     
     <param name="output_timing" value="false"/>
     <param name="advertise_map_service" value="true"/>
@@ -19,8 +20,8 @@
     <param name="map_update_distance_thresh" value="0.0"/>
     <param name="map_update_angle_thresh" value="0.0"/>
     
-    <param name="map_resolution" value="0.05"/>
-    <param name="map_size" value="1024"/>
+    <param name="map_resolution" value="0.05"/><!--分辨率 越界-->
+    <param name="map_size" value="512"/><!--地图大小 300-500-->
     <param name="map_start_x" value="0.5"/>
     <param name="map_start_y" value="0.5"/>
     

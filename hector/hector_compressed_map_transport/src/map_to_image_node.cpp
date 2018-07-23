@@ -41,9 +41,9 @@
 
 using namespace std;
 
-/**
+/**这个节点提供了栅格地图的图像通过image_transport，因此传输消耗更少的带宽。
  * @brief This node provides occupancy grid maps as images via image_transport, so the transmission consumes less bandwidth.
- * The provided code is a incomplete proof of concept.
+ * The provided code is a incomplete proof of concept.*所提供的代码是一个不完整的概念证明。
  */
 class MapAsImageProvider
 {

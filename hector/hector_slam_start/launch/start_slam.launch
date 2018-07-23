@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-
-<launch>
-	<include file="$(find hector_slam_start)/launch/hector_mapping.launch"/>
-
-	<node name="explorer_tf" pkg="hector_slam_start" type="explorer_robot_pose.py"/>
-</launch>

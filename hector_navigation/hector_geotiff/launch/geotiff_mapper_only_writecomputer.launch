@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="map_file_path" default="/home/sun/catkin_slam/maps"/>
+  <!-- 保存最后地图的位置 -->
+  <arg name="map_file_base_name" default="NWPU_RESCUE_FROM_geotiff_mapper_only"/>
+
+  <arg name="team_name" default="Explorer"/>
+  <arg name="country" default="China"/>
+  <arg name="mission_name" default="MISSION"/>
+
+<!--
+
+  <node pkg="hector_geotiff" type="geotiff_node" name="hector_geotiff_node" output="screen" launch-prefix="nice -n 15">
+    <remap from="map" to="scanmatcher_map" />
+    <param name="map_file_path" type="string" value="$(arg map_file_path)" />
+    <param name="map_file_base_name" type="string" value="$(arg map_file_base_name)" />
+    <param name="geotiff_save_period" type="double" value="45" />
+
+    <param name="plugins" type="string" value="hector_geotiff_plugins/TrajectoryMapWriter hector_worldmodel_geotiff_plugins/QRCodeMapWriter hector_worldmodel_geotiff_plugins/VictimMapWriter" />
+    <param name="VictimMapWriter/draw_all_objects" value="false" />
+    <param name="VictimMapWriter/class_id" value="victim" />
+    <param name="QRCodeMapWriter/draw_all_objects" value="true" />
+    <param name="QRCodeMapWriter/class_id" value="qrcode" />
+  </node>
+
+-->
+
+  <node pkg="hector_geotiff" type="geotiff_node" name="hector_geotiff_node" output="screen" launch-prefix="nice -n 15">
+<!--
+    <remap from="map" to="scanmatcher_map" />
+-->
+    <param name="map_file_path" type="string" value="$(arg map_file_path)" />
+    <param name="map_file_base_name" type="string" value="$(arg map_file_base_name)" />
+    <param name="geotiff_save_period" type="double" value="15" />
+
+    <param name="plugins" type="string" value="hector_geotiff_plugins/TrajectoryMapWriter hector_worldmodel_geotiff_plugins/QRCodeMapWriter"/>
+    <param name="QRCodeMapWriter/draw_all_objects" value="true" />
+    <param name="QRCodeMapWriter/class_id" value="qrcode" />
+	<param name="QRCodeMapWriter/team_name"   value="$(arg team_name)"/>
+	<param name="QRCodeMapWriter/country"   value="$(arg country)"/>
+	<param name="QRCodeMapWriter/mission_name"   value="$(arg mission_name)"/>
+
+<!--
+    <param name="plugins" type="string" value="hector_geotiff_plugins/TrajectoryMapWriter hector_worldmodel_geotiff_plugins/VictimMapWriter"/>
+    <param name="VictimMapWriter/draw_all_objects" value="true" />
+    <param name="VictimMapWriter/class_id" value="victim" />
+	<param name="VictimMapWriter/team_name"   value="$(arg team_name)"/>
+	<param name="VictimMapWriter/country"   value="$(arg country)"/>
+	<param name="VictimMapWriter/mission_name"   value="$(arg mission_name)"/>
+-->
+
+
+  </node>
+</launch>
+
+
