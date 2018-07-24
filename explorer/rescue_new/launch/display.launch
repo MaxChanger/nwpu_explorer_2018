@@ -1,9 +1,0 @@
-<launch>
-	<arg name="model" />
-	<arg name="gui" default="False" />
-	<param name="robot_description" textfile="$(find rescue_new)/robots/rescue_new.URDF" />
-	<param name="use_gui" value="$(arg gui)" />
-	<node name="odom_publisher" pkg="sp1s" type="odom_publisher" />
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find rescue_new)/urdf.rviz" />
-</launch>
