@@ -1,6 +1,0 @@
-<package>
-  <description brief="rescue_new">rescue_new</description>
-  <depend package="gazebo" />
-  <author>me</author>
-  <license>BSD</license>
-</package>
