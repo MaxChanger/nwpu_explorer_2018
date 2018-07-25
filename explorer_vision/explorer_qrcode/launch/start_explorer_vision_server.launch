@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+<!--在工控机上运行的图像节点 -->
+<include file = "$(find explorer_launch)/launch/camera/test_camera.launch"/>
+<include file="$(find hector_object_tracker)/launch/camera_look_at.launch"/>
+</launch>

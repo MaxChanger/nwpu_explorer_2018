@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.ipp": "cpp",
+        "algorithm": "cpp",
+        "slist": "cpp",
+        "initializer_list": "cpp"
+    }
+}
