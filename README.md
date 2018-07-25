@@ -21,7 +21,7 @@ NWPU Explorer Code Repository — 西北工业大学舞蹈机器人基地救援�
 
 ```bash
 
-sudo apt install ros-kinetic-moveit ros-kinetic-controller-interface  ros-kinetic-joint-limits-interface  ros-kinetic-transmission-interface ros-kinetic-realtime-tools ros-kinetic-control-toolbox ros-kinetic-controller-manager 
+sudo apt install ros-kinetic-moveit ros-kinetic-joy ros-kinetic-controller-interface  ros-kinetic-joint-limits-interface  ros-kinetic-transmission-interface ros-kinetic-realtime-tools ros-kinetic-control-toolbox ros-kinetic-controller-manager 
 ```
 
 ## explorer_navigation 编译时的依赖包说明目录
