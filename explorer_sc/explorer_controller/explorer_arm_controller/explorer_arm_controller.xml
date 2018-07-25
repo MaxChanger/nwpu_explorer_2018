@@ -1,0 +1,9 @@
+<library path="libexplorer_arm_controller">
+
+  <class name="explorer_arm_controller/ArmController" type="explorer_arm_controller::ArmController" base_class_type="controller_interface::ControllerBase">
+    <description>
+      The arm controller
+    </description>
+  </class>
+
+</library>

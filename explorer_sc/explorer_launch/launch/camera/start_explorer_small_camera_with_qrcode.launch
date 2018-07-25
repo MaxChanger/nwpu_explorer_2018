@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+    <include file = "$(find explorer_launch)/launch/camera/start_explorer_small_camera.launch"/>
+    <include file = "$(find explorer_launch)/launch/camera/qrcode_detection.launch"/>
+</launch>

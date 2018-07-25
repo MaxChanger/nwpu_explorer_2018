@@ -1,0 +1,38 @@
+base_link  joint_front_back  用来确定方位和控制车的俯仰和旋转,joint_front_back指向整车前
+
+frame_link为车体 副履带、轮子、机械臂第一个joint都为其子节点
+
+
+机械臂的
+      - arm1_bearing_joint    # 整体旋转
+	#arm1_Link
+      - arm2_arm1_joint       # 整体上下
+	arm2_Link
+      - arm3_arm2_joint       # 中间的电机
+	arm3_Link
+      - pt1_arm_joint         # 第一个轴向旋转
+	pt1_Link
+      - pt2_pt1_joint         # 摆动
+	pt2_Link
+      - rotate_joint          # 轴向爪子旋转
+	paw_rotation_Link
+      - paw                   # 爪子开合  虚拟joint
+
+副履带
+# 	left_up_fin_Link          left_up_fin_base_joint
+
+#	right_up_fin_Link         right_up_fin_base_joint
+
+#	left_down_fin_Link        left_down_fin_base_joint
+
+#	right_down_fin_Link       right_down_fin_base_joint 
+
+轮子的joint  建议加上
+left_up_wheel_Link
+left_up_wheel_base_joint
+left_down_wheel_Link
+left_down_wheel_base_joint
+right_up_wheel_Link
+right_up_wheel_base_joint
+right_down_wheel_Link
+right_down_wheel_base_joint

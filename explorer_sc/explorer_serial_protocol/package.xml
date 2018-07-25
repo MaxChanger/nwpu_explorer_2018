@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<package>
+	<name>
+		explorer_serial_protocol
+	</name>
+	<version>
+		0.0.0
+	</version>
+	<description>
+		Used in NWPU DanceBot : Explorer Team
+		For the Robot universal serial protocol
+		read and write from the USB Can
+	</description>
+	<maintainer email="exbot@todo.todo">
+		startar
+	</maintainer>
+	<!-- One license tag required, multiple allowed, one license per tag -->
+	<!-- Commonly used license strings: -->
+	<!-- BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+	<license>
+		TODO
+	</license>
+	<!-- Url tags are optional, but multiple are allowed, one per tag -->
+	<!-- Optional attribute type can be: website, bugtracker, or repository -->
+	<!-- Example: -->
+	<!-- <url type="website">http://wiki.ros.org/explorer_serial_protocol</url> -->
+	<!-- wirte you name or nick name there if you change the code of this package -->
+	<author>
+		startar
+	</author>
+	<author email="543584502@qq.com">
+		TheNext
+	</author>
+	<buildtool_depend>
+		catkin
+	</buildtool_depend>
+	<build_depend>
+		explorer_msgs
+	</build_depend>
+	<build_depend>
+		roscpp
+	</build_depend>
+	<build_depend>
+		rospy
+	</build_depend>
+	<build_depend>
+		std_msgs
+	</build_depend>
+	<run_depend>
+		explorer_msgs
+	</run_depend>
+	<run_depend>
+		roscpp
+	</run_depend>
+	<run_depend>
+		rospy
+	</run_depend>
+	<run_depend>
+		std_msgs
+	</run_depend>
+	<export>
+		<!-- Other tools can request additional information be placed here -->
+	</export>
+</package>

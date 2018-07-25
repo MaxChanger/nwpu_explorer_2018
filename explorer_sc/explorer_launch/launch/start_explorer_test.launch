@@ -1,0 +1,7 @@
+<?xml version="1.0"?> 
+<!-- 以下为测试机器人时所用的结点 -->
+<!-- 注意!!会启动串口通信 -->
+<launch>
+    <include file = "$(find explorer_launch)/launch/start_explorer_client.launch"/>
+    <include file = "$(find explorer_launch)/launch/start_explorer_server.launch"/>
+</launch>
