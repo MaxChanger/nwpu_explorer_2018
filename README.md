@@ -1,14 +1,23 @@
----
-typora-copy-images-to: Image
----
+### explorer_sc 编译时的依赖包说明目录
 
-# NWPU_Explorer
-NWPU Explorer Code Repository  —  西北工业大学舞蹈机器人基地救援组
+***
 
-- 软件组：黄德慧、孙家岱、赵玉凡、刘靖泽
-- 电子组：梁成栋、谢凯、~~丁晓斌~~
-- 机械组：闫雨晨
+- **controller_interface**     robothardware的核心控件
+- **moveit_msg**                    moveit 消息依赖
+- **control_toolbox**             control依赖
+- **controller_manager**      controllers 管理
+- **joint_limits_interface**    机械臂等节点的接口
+- **transmission_interface** 机械臂moveit需要
 
-![基地标志_横排](Image/基地标志_横排.png)
+```bash
 
-![舞蹈机器人基地救援组标志_透明](Image/舞蹈机器人基地救援组标志_透明.png)
+sudo apt install ros-kinetic-moveit ros-kinetic-controller-interface  ros-kinetic-joint-limits-interface  ros-kinetic-transmission-interface ros-kinetic-realtime-tools ros-kinetic-control-toolbox ros-kinetic-controller-manager 
+```
+
+## explorer_navigation 编译时的依赖包说明目录
+
+```bash
+sudo apt install ros-kinetic-costmap-2d
+sudo apt install ros-kinetic-nav-core
+```
+
