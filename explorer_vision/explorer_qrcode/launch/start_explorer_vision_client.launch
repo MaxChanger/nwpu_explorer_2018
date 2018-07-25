@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+<!--在电脑上运行的建图节点 -->
+<include file = "$(find explorer_qrcode)/launch/qrcode_detection.launch"/>
+<include file = "$(find ros_faster_rcnn)/launch/frcnn.launch"/>
+<include file = "$(find hector_object_tracker)/launch/victim.launch"/>
+<include file = "$(find hector_geotiff)/launch/geotiff_mapper_two.launch"/>
+</launch>

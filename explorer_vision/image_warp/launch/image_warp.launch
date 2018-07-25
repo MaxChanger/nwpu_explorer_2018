@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+	<arg name="camera_name_right" default="/camera_right/image_raw" />
+	<arg name="camera_name_left" default="/camera_left/image_raw" />
+	<node pkg="image_warp" name="image_warp_right" type="image_warp">
+		<param name="camera_name" value="$(arg camera_name_right)" />
+		<param name="img_name" value="/camera_right_org/image_raw" />
+	</node>
+
+	<node pkg="image_warp" name="image_warp_left" type="image_warp">
+		<param name="camera_name" value="$(arg camera_name_left)" />
+		<param name="img_name" value="/camera_left_org/image_raw" />
+	</node>
+</launch>

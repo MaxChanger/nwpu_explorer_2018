@@ -1,0 +1,20 @@
+<launch>
+
+  <!-- The image_topic is the topic which publish the image that you want -->
+  <!--<arg name="sub_image_topic" default="/usb_cam/image_raw"/>-->
+  <arg name="sub_image_topic" default="/camera_right/image_raw" />
+
+  <node pkg="explorer_motion_detection" type="motion_detection_node" name="motion_detection" output="screen" respawn="true">
+
+    <param name="sub_image_topic" value="$(arg sub_image_topic)" />
+    <param name="image_transport" value="compressed" />
+  </node>
+
+  <!-- for kinect
+  <include file="$(find freenect_launch)/launch/freenect.launch"/>
+-->
+  <!-- 
+  <include file="$(find openni2_launch)/launch/openni2.launch"/>
+-->
+
+</launch>

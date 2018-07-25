@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<launch>
+<!--在工控机上运行的建图节点 -->
+<include file = "$(find rplidar_ros)/launch/rplidar.launch"/>
+<!--
+<include file = "$(find explorer_launch)/launch/camera/test_camera.launch"/>
+-->
+<include file ="$(find cartographer_ros)/launch/explorer_slam.launch"/>
+<include file="$(find hector_exploration_node)/launch/exploration_planner.launch"/>
+<node pkg="hector_exploration_controller" type="simple_exploration_controller" name="simple">
+</node>
+
+</launch>
