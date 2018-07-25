@@ -1,4 +1,0 @@
-[submodule "libraries/py-faster-rcnn"]
-	path = libraries/py-faster-rcnn
-	url = https://github.com/rbgirshick/py-faster-rcnn.git
-	ignore = dirty
