@@ -1,0 +1,61 @@
+ <!--
+ 
+    这个launch用来打开cartographer构建地图
+    初次之外还需要运行激光节点获取激光数据
+ 
+ -->
+
+
+<launch>
+<!--
+    <arg name="trajectory_source_frame_name" default="/base_link"/>
+    <arg name="trajectory_update_rate" default="4"/>
+    <arg name="trajectory_publish_rate" default="0.25"/>  
+-->
+  <param name="/use_sim_time" value="flase" /> 
+  <!--这个参数当回放bag数据集是设置为true，此时说明系统使用的是仿真时间，如果设置为false，则系统使用walltime --> 
+  
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find cartographer_ros)/configuration_files
+          -configuration_basename demo_rplidar.lua"
+      output="screen">
+    <remap from="scan" to="scan" />
+  </node>
+
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+  
+  <node name="hector_map_server" pkg="hector_map_server" type="hector_map_server" output="screen" />
+  <!--node name="rviz" pkg="rviz" type="rviz" required="true"
+      args="-d $(find cartographer_ros)/configuration_files/demo_Best.rviz" /-->
+
+
+  <!--node name="base_to_laser_broadcaster" pkg="tf" type="static_transform_publisher" args="-0.355 0 0.37 0 0 0 /base_link /laser 100"/-->
+  <node name="base_to_laser_broadcaster" pkg="tf" type="static_transform_publisher" args="0.00 0 0.17 0 0 0 /base_link /laser 100"/>
+ 
+
+
+</launch>
+
+
+
+
+
+
+
+
+  <!--新的map话题在这个节点发出 -->
+  <!--node name="hector_map_server" pkg="hector_map_server" type="hector_map_server" output="screen" /-->
+  
+  <!--node name="odom_to_laser_broadcaster" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 /odom /base_link 100"/-->
+
+  <!--node name="base_to_camera_broadcaster" pkg="tf" type="static_transform_publisher"     args="0 -0.5 0 0 0 0 /base_link /camera_link 100" /-->
+    <!--这里的lua 一开始写了demo_rplidar.lua 会是错误的，后来在现有的基础上修改的-->
+    <!--错误的原因并不是因为调用了外部的编写的lua文件不行，而是网上给的那个lua配置有问题-->
+    <!--现在的demo_rplidar.lua是在revo_lds.lua的基础上修改的，还有有点问题-->
+<!--
+ 节点属性之复位属性：
+    对于每个节点，设置复位属性为真 respawn=”true”，这样当节点停止的时候，roslaunch会重新启动该节点。比如在某个节点因为软件崩溃或硬件故障以及其他原因导致过早退出系统的时候会起到作用。
+    节点属性之必要节点：当一个节点被声明为必要节点即 required=”true”终止的时候，roslaunch 会终止所有其他活跃节点并退出。比如在依赖控制台的机器人遥控导航中，关闭了该远程控制节点所在的窗口，roslaunch将会终止其他节点，然后退出。
+-->

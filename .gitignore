@@ -1,0 +1,5 @@
+install_isolated/
+devel_isolated/
+build_isolated/
+ceres-solver/build/
+protobuf/build/
