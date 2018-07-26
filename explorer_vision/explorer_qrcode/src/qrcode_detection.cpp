@@ -80,7 +80,9 @@ qrcode_detection_impl::qrcode_detection_impl(ros::NodeHandle nh, ros::NodeHandle
   //
   priv_nh.param("camera_info1", camera_info1_, std::string("/camera_right/camera_info"));
   priv_nh.param("camera_info2", camera_info2_, std::string("/camera_left/camera_info"));
-  ROS_ERROR("%s,%s",camera_info1_,camera_info2_);
+
+  priv_nh.param("camera_frame",camera_frame_,std::string("camera_right"));
+  //ROS_ERROR("%s,%s",camera_info1_,camera_info2_);
 
   //myadd
   // priv_nh.param("sub_image_qrcode_topic_front_left_camera", sub_image_qrcode_topic_front_left_camera_, std::string("/front_left_camera/image_raw"));
@@ -151,7 +153,7 @@ void qrcode_detection_impl::imageCallback(const sensor_msgs::CompressedImageCons
 {
     //ROS_ERROR("miao miaomia0");
     //if(!flag_r)
-    if(!flag_r||!flag_l)
+    if(!flag_l||!flag_r)
     {
         return;
     }
@@ -254,126 +256,131 @@ void qrcode_detection_impl::imageCallback(const sensor_msgs::CompressedImageCons
             flag=true;
         }
         thre+=20;
-    //     if(flag)
-    //     {
-    //         Point roi_left_up(temp_max_x<img_org.cols?temp_max_x:img_org.cols,temp_min_y-baseLen>0?temp_min_y-baseLen:0);
-    //         Point roi_right_down(temp_max_x+2*baseLen<img_org.cols?temp_max_x+2*baseLen:img_org.cols, temp_max_y+baseLen>img_org.rows?img_org.rows:temp_max_y+baseLen);
-    //         //Mat gray=img_org(Rect(roi_left_up,roi_right_down));
-    //         Mat gray=img_org(Rect(roi_left_up,roi_right_down));
-    //         //rectangle(img_org,Rect(roi_left_up,roi_right_down),Scalar(0));
-    //         // ROS_ERROR("%d",baseLen);
-    //         // ROS_ERROR("%d,%d,%d,%d",roi_left_up.x,roi_left_up.y,roi_right_down.x,roi_right_down.y);
-    //         // ROS_ERROR("%d,%d",img_org.cols,img_org.rows);
-    //         // ROS_ERROR("in the code");
-    //         if(gray.empty())
-    //         ROS_ERROR("error");
-    //         int baseX=temp_max_x+int(0.5*baseLen)>=img_org.cols?img_org.cols:temp_max_x+int(0.5*baseLen);
-    //         int baseY=temp_min_y-baseLen>0?temp_min_y-baseLen:0;
+        if(flag)
+        {
+            Point roi_left_up(temp_max_x<img_org.cols?temp_max_x:img_org.cols,temp_min_y-baseLen>0?temp_min_y-baseLen:0);
+            Point roi_right_down(temp_max_x+2*baseLen<img_org.cols?temp_max_x+2*baseLen:img_org.cols, temp_max_y+baseLen>img_org.rows?img_org.rows:temp_max_y+baseLen);
+            //Mat gray=img_org(Rect(roi_left_up,roi_right_down));
+            Mat gray=img_org(Rect(roi_left_up,roi_right_down));
+            //rectangle(img_org,Rect(roi_left_up,roi_right_down),Scalar(0));
+            // ROS_ERROR("%d",baseLen);
+            // ROS_ERROR("%d,%d,%d,%d",roi_left_up.x,roi_left_up.y,roi_right_down.x,roi_right_down.y);
+            // ROS_ERROR("%d,%d",img_org.cols,img_org.rows);
+            // ROS_ERROR("in the code");
+            if(gray.empty())
+            {
+                ROS_ERROR("error");
+                return;
+            }
+            int baseX=temp_max_x+int(0.5*baseLen)>=img_org.cols?img_org.cols:temp_max_x+int(0.5*baseLen);
+            int baseY=temp_min_y-baseLen>0?temp_min_y-baseLen:0;
             
-    //         //zxing扫描开始
-    //         //Mat gray=img_org.clone();
-    //         Mat temp;
-    //         threshold(gray,temp,50,255,THRESH_BINARY);
-    //         int roi_thre=22;
-    //         Mat kernel=getStructuringElement(MORPH_RECT,Size(roi_thre,roi_thre));
-    //         erode(temp,temp,kernel);
-    //         vector< vector<Point> > contour;
-    //         findContours(temp,contour,CV_RETR_LIST,CV_CHAIN_APPROX_SIMPLE);
-    //         for(int x=1;x<contour.size();x++)
-    //         {
-    //             int all_x=0;
-    //             int all_y=0;
-    //             for(int y=0;y<contour[x].size();y++)
-    //             {
-    //             all_x+=contour[x][y].x;
-    //             all_y+=contour[x][y].y;
-    //             }
-    //             int avg_x=int(all_x/contour[x].size());
-    //             int avg_y=int(all_y/contour[x].size());
-    //             int distance_x=(abs(avg_x-contour[x][0].x))*1.5;
-    //             int distance_y=(abs(avg_y-contour[x][0].y))*1.5;
-    //             Point left_up(avg_x-distance_x>=0?avg_x-distance_x:0,avg_y-distance_y>=0?avg_y-distance_y:0);
-    //             Point right_down(avg_x+distance_x<gray.cols?avg_x+distance_x:gray.cols,avg_y+distance_y<gray.rows?avg_y+distance_y:gray.rows);
-    //             int len_x=right_down.x-left_up.x;
-    //             int len_y=right_down.y-left_up.y;
-    //             if(len_x*len_y<1000||len_x>int(1.5*len_y)||len_x<int(0.66*len_y))
-    //                 continue;
-    //             //rectangle(gray,Rect(left_up,right_down),Scalar(0));
-    //             Mat roi=gray(Rect(left_up.x,left_up.y,right_down.x-left_up.x,right_down.y-left_up.y));
-    //             try
-    //             {
-    //                 Ref<LuminanceSource> source = MatSource::create(roi);
-    //                 MultiFormatReader delegate;
-    //                 //GenericMultipleBarcodeReader reader(delegate);
-    //                 Ref<Reader> reader;
-    //                 reader.reset(new MultiFormatReader);
-    //                 Ref<Binarizer> binarizer(new GlobalHistogramBinarizer(source));
-    //                 Ref<BinaryBitmap> bitmap(new BinaryBitmap(binarizer));
-    //                 Ref<Result> result=reader->decode(bitmap, DecodeHints(DecodeHints::TRYHARDER_HINT));
-    //                 int resultPointCount = result->getResultPoints()->size();
-    //                 if(resultPointCount==4)
-    //                 {
-    //                     //cout<<result->getText()->getText()<<endl;
-    //                     string text=result->getText()->getText();
-    //                     ROS_ERROR("zxing %s",text.c_str());
-    //                     percept.info.object_id=text.substr(0,5);
-    //                     percept.info.object_support=1.0;
-    //                     percept.info.name=text.substr(0,5);
-    //                     ROS_ERROR("maybe 2  %d",resultPointCount);
-    //                     int min_x = 99999999, min_y = 99999999, max_x = 0, max_y = 0;
+            //zxing扫描开始
+            //Mat gray=img_org.clone();
+            Mat temp;
+            threshold(gray,temp,50,255,THRESH_BINARY);
+            int roi_thre=22;
+            Mat kernel=getStructuringElement(MORPH_RECT,Size(roi_thre,roi_thre));
+            erode(temp,temp,kernel);
+            vector< vector<Point> > contour;
+            findContours(temp,contour,CV_RETR_LIST,CV_CHAIN_APPROX_SIMPLE);
+            for(int x=1;x<contour.size();x++)
+            {
+                int all_x=0;
+                int all_y=0;
+                for(int y=0;y<contour[x].size();y++)
+                {
+                all_x+=contour[x][y].x;
+                all_y+=contour[x][y].y;
+                }
+                int avg_x=int(all_x/contour[x].size());
+                int avg_y=int(all_y/contour[x].size());
+                int distance_x=(abs(avg_x-contour[x][0].x))*1.5;
+                int distance_y=(abs(avg_y-contour[x][0].y))*1.5;
+                Point left_up(avg_x-distance_x>=0?avg_x-distance_x:0,avg_y-distance_y>=0?avg_y-distance_y:0);
+                Point right_down(avg_x+distance_x<gray.cols?avg_x+distance_x:gray.cols,avg_y+distance_y<gray.rows?avg_y+distance_y:gray.rows);
+                int len_x=right_down.x-left_up.x;
+                int len_y=right_down.y-left_up.y;
+                if(len_x*len_y<1000||len_x>int(1.5*len_y)||len_x<int(0.66*len_y))
+                    continue;
+                //rectangle(gray,Rect(left_up,right_down),Scalar(0));
+                Mat roi=gray(Rect(left_up.x,left_up.y,right_down.x-left_up.x,right_down.y-left_up.y));
+                try
+                {
+                    Ref<LuminanceSource> source = MatSource::create(roi);
+                    MultiFormatReader delegate;
+                    //GenericMultipleBarcodeReader reader(delegate);
+                    Ref<Reader> reader;
+                    reader.reset(new MultiFormatReader);
+                    Ref<Binarizer> binarizer(new GlobalHistogramBinarizer(source));
+                    Ref<BinaryBitmap> bitmap(new BinaryBitmap(binarizer));
+                    Ref<Result> result=reader->decode(bitmap, DecodeHints(DecodeHints::TRYHARDER_HINT));
+                    int resultPointCount = result->getResultPoints()->size();
+                    if(resultPointCount==4)
+                    {
+                        //cout<<result->getText()->getText()<<endl;
+                        string text=result->getText()->getText();
+                        ROS_ERROR("zxing %s",text.c_str());
+                        percept.info.object_id=text.substr(0,5);
+                        percept.info.object_support=1.0;
+                        percept.info.name=text.substr(0,5);
+                        ROS_ERROR("maybe 2  %d",resultPointCount);
+                        int min_x = 99999999, min_y = 99999999, max_x = 0, max_y = 0;
 
-    //                     for (int i = 0; i < 4; ++i)
-    //                     {
-                            
-    //                         if (result->getResultPoints()[i]->getX() > max_x)
-    //                             max_x = int(result->getResultPoints()[i]->getX());
-    //                         if (result->getResultPoints()[i]->getX() < min_x)
-    //                             min_x = int(result->getResultPoints()[i]->getX());
-    //                         if (result->getResultPoints()[i]->getY()> max_y)
-    //                             max_y = int(result->getResultPoints()[i]->getY());
-    //                         if (result->getResultPoints()[i]->getX() < min_y)
-    //                             min_y = int(result->getResultPoints()[i]->getX());
-    //                     }
-    //                     ROS_ERROR("maybe 1");
-    //                     cv::Vec3f left_top_corner(baseX+min_x,baseY+min_y, 1.0f);
-    //                     cv::Vec3f right_bottom_corner(baseX+max_x,baseY+max_y, 1.0f);
-    //                     // cv::Vec3f left_top_corner(min_x,min_y, 1.0f);
-    //                     // cv::Vec3f right_bottom_corner(max_x,max_y, 1.0f);
-    //                     if (rotation_angle != 0.0)
-    //                     {
-    //                         ROS_ERROR("Non-zero rotations are currently not supported!");
-    //                         continue;
-    //                     }
-    //                     percept.x = (left_top_corner(0) + right_bottom_corner(0)) / 2;
-    //                     percept.y = (left_top_corner(1) + right_bottom_corner(1)) / 2;
-    //                     percept.width = right_bottom_corner(0) - left_top_corner(0);
-    //                     percept.height = right_bottom_corner(1) - left_top_corner(1);
-    //                     percept_publisher_.publish(percept);
-    //                     ROS_ERROR("fin");
-    //                 }
+                        for (int i = 0; i < 4; ++i)
+                        {
+                        
+                            if (result->getResultPoints()[i]->getX() > max_x)
+                                max_x = int(result->getResultPoints()[i]->getX());
+                            if (result->getResultPoints()[i]->getX() < min_x)
+                                min_x = int(result->getResultPoints()[i]->getX());
+                            if (result->getResultPoints()[i]->getY()> max_y)
+                                max_y = int(result->getResultPoints()[i]->getY());
+                            if (result->getResultPoints()[i]->getX() < min_y)
+                                min_y = int(result->getResultPoints()[i]->getX());
+                        }
+                        ROS_ERROR("maybe 1");
+                        cv::Vec3f left_top_corner(baseX+min_x,baseY+min_y, 1.0f);
+                        cv::Vec3f right_bottom_corner(baseX+max_x,baseY+max_y, 1.0f);
+                        // cv::Vec3f left_top_corner(min_x,min_y, 1.0f);
+                        // cv::Vec3f right_bottom_corner(max_x,max_y, 1.0f);
+                        if (rotation_angle != 0.0)
+                        {
+                            ROS_ERROR("Non-zero rotations are currently not supported!");
+                            continue;
+                        }
+                        percept.x = (left_top_corner(0) + right_bottom_corner(0)) / 2;
+                        percept.y = (left_top_corner(1) + right_bottom_corner(1)) / 2;
+                        percept.width = right_bottom_corner(0) - left_top_corner(0);
+                        percept.height = right_bottom_corner(1) - left_top_corner(1);
+                        percept_publisher_.publish(percept);
+                        ROS_ERROR("fin");
+                    }
                     
-    //             }catch (const ReaderException& e) {
-    //                 //cerr << e.what() << " (ignoring)" << endl;
-    //             } catch (const zxing::IllegalArgumentException& e) {
-    //                 //cerr << e.what() << " (ignoring)" << endl;
-    //             } catch (const zxing::Exception& e) {
-    //                 //cerr << e.what() << " (ignoring)" << endl;
-    //             } catch (const std::exception& e) {
-    //                 //cerr << e.what() << " (ignoring)" << endl;
-    //             }
-    //         }
-    //     }
+                }catch (const ReaderException& e) {
+                    //cerr << e.what() << " (ignoring)" << endl;
+                } catch (const zxing::IllegalArgumentException& e) {
+                    //cerr << e.what() << " (ignoring)" << endl;
+                } catch (const zxing::Exception& e) {
+                    //cerr << e.what() << " (ignoring)" << endl;
+                } catch (const std::exception& e) {
+                    //cerr << e.what() << " (ignoring)" << endl;
+                }
+            }
+        }
     
-    // //抠图
+    //抠图
     
 
 
 
         
 
+//ROS_ERROR("put");
 //我只是一个平凡的视频输出器，这个主要用于调试，不用管
-    if (qrcode_image_publisher_.getNumSubscribers() > 0&&image->header.frame_id=="camera_right")
+    if (image->header.frame_id==camera_frame_)
     {
+        //ROS_ERROR("in");
       try
       {
         //cv::Rect rect(cv::Point2i(std::max(min_x, 0), std::max(min_y, 0)), cv::Point2i(std::min(max_x, cv_image->image.cols), std::min(max_y, cv_image->image.rows)));
