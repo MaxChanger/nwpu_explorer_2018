@@ -52,11 +52,6 @@ void Login::on_loginButton_clicked()
         enterControlInterface();
         accept();
   }
-  else if(ui->usernameEdit->text() == tr("root")&& ipad == tr("107.170.206.42"))
-  {
-      enterControlInterface();
-      accept();
-  }
   else if(ui->usernameEdit->text().isEmpty() && ui->ipEdit->text().isEmpty())
   {
         QMessageBox::StandardButton reply;
