@@ -7,3 +7,6 @@
 
 ### 远程登录
 用用户名和远程工控机地址登录。通过界面启动各个功能。
+
+使用
+`rosrun explorer_ui explorer_ui`
