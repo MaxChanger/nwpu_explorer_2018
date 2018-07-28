@@ -39,12 +39,12 @@ set(HEADERS include/explorer_thread.h include/explorer_ui_ability.h include/expl
     include/qusbcam.h
     #include/camlaunchgen.h
     include/qexplorerserver.h
-    include/pingtest.h)
+    include/pingtest.h) #使用header是为了方便在qtcreator中使用头文件，完成自动添加槽和信号的功能
 
 QT4_ADD_RESOURCES(QT_RESOURCES_CPP ${QT_RESOURCES})
 QT4_WRAP_UI(QT_FORMS_HPP ${QT_FORMS})
-QT4_WRAP_CPP(QT_MOC_HPP ${QT_MOC})
-set(CMAKE_CXX_COMPILER g++)
+QT4_WRAP_CPP(QT_MOC_HPP ${QT_MOC})#进行信号和槽的预处理
+set(CMAKE_CXX_COMPILER g++)#需要特别声明
 
 ##############################################################################
 # Sources
