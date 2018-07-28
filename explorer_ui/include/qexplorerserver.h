@@ -1,7 +1,7 @@
 #ifndef QEXPLORERSERVER_H
 #define QEXPLORERSERVER_H
 
-#ifndef Q_MOC_RUN
+#ifndef Q_MOC_RUN //特别声明 防止对非qt头文件进行qt moc处理，否则会报错
 
 #include <iostream>
 #include <stdio.h>
@@ -22,7 +22,7 @@ public:
     explicit QExplorerserver(QString explorer_usrn, QString explorer_ipad, QWidget *parent = 0);
     ~QExplorerserver();
 
-private Q_SLOTS:
+private Q_SLOTS: //关键字需要特别声明。如果出现关键字错误，尝试将Q_SLOTS改为slots
     void on_geotiffButton_clicked();
     void on_objtrackButton_clicked();
     void on_qrcodeButton_clicked();
