@@ -8,5 +8,8 @@
 ### 远程登录
 用用户名和远程工控机地址登录。通过界面启动各个功能。
 
+安装编译 可能缺少qt4 package
+`sudo apt-get install ros-kinetic-qt-build`
+
 使用
 `rosrun explorer_ui explorer_ui`
