@@ -81,6 +81,8 @@ private:
 
   std::string camera_info1_;
   std::string camera_info2_;
+  std::string camera_frame_;
+
 };
 
 } // namespace qrcode_detection
