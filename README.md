@@ -1,4 +1,4 @@
-<img src="./.image/基地标志_横排.png" width="50%" hegiht="50%" align=center />
+<img src="./.image/1.png" width="50%" hegiht="50%" align=center />
 
 # NWPU_Explorer
 
@@ -8,7 +8,7 @@ NWPU Explorer Code Repository — 西北工业大学舞蹈机器人基地救援�
 - 电子组：梁成栋、谢凯、~~丁晓斌~~
 - 机械组：闫雨晨
 
-<img src="./.image/舞蹈机器人基地救援组标志_透明.png" width="25%" hegiht="25%" align=center />
+<img src="./.image/2.png" width="25%" hegiht="25%" align=center />
 
  
 
