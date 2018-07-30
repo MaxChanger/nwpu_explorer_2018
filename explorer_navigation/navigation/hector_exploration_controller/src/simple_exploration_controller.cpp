@@ -1,30 +1,3 @@
-//=================================================================================================
-// Copyright (c) 2012, Stefan Kohlbrecher, TU Darmstadt
-// All rights reserved.
-
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Simulation, Systems Optimization and Robotics
-//       group, TU Darmstadt nor the names of its contributors may be used to
-//       endorse or promote products derived from this software without
-//       specific prior written permission.
-
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//=================================================================================================
 /**
  * 
 controller的几个作用：
@@ -35,9 +8,10 @@ controller的几个作用：
   setplan函数用到了刚才返回的结果作为参数  然后setPlan又调用follower里边的transformGlobalPlan函数 结果存在了global_plan_中
   最后global_plan_经过下面computeVelocityCommands计算速度的时候调用了
   
-2.调用timerCmdVelGeneration 然后调用timerCmdVelGeneration调用follower 里边的 computeVelocityCommands（计算下一步的速度）
-computeVelocityCommands用了global_plan_的数据 最后生成要发布的速度存在了twist里边 发给底盘
- */
+2.调用timerCmdVelGeneration 然后调用timerCmdVelGeneration调用follower 里边的 computeVelocityCommands
+  （计算下一步的速度）
+  computeVelocityCommands用了global_plan_的数据 最后生成要发布的速度存在了twist里边 发给底盘
+*/
 
 #include <ros/ros.h>
 #include <hector_path_follower/hector_path_follower.h>
@@ -71,16 +45,12 @@ public:
 
 
     // 机器原地 左方向 转圈 为了生成更好costmap 
-    int i = 0;
-    int flag = 1;
-    for(i = 0 ; i < 25 ; i++){   // 25 大概转了180°
-        geometry_msgs::Twist twist;//定义一个类型
-        if(i%2 == 0){
-          //flag = -flag;
-        }
+    for(int i = 0 ; i < 25 ; i++){    // i = 25 时大概转了180°
+        geometry_msgs::Twist twist;   //定义一个类型
+
         twist.linear.x   =  0 ;
         twist.linear.y   =  0 ;
-        twist.angular.z  =  0.2 ;//* flag ;//调整大小
+        twist.angular.z  =  0.2 ;
         
         ROS_INFO("[Move By Itself] velocity pub x:%.2lf y:%.2lf z:%.2lf", twist.linear.x, twist.linear.y ,twist.angular.z);
         vel_pub_.publish(twist);//发送给底盘
