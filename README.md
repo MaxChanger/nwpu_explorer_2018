@@ -1,5 +1,3 @@
-![1](/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/image/1.png)
-
 # NWPU_Explorer
 
 NWPU Explorer Code Repository — 西北工业大学舞蹈机器人基地救援组
