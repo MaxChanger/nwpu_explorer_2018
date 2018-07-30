@@ -244,17 +244,9 @@ namespace pose_follower {
     /**************要删除还是要保留************/
 
 
-
-
-
-    bool in_goal_position = false;
-    while(fabs(diff.linear.x) <= tolerance_trans_ &&
-          fabs(diff.linear.y) <= tolerance_trans_ &&
-          fabs(diff.angular.z) <= tolerance_rot_)
-    {
       int ff_goal_size = 1;
-      if(global_plan_.size() > 100){
-        ff_goal_size = global_plan_.size() * 0.95; 
+      if(global_plan_.size() > 150){
+        ff_goal_size = global_plan_.size() - 20 ; 
       }else if(global_plan_.size() > 80){
         ff_goal_size = global_plan_.size() * 0.9; 
       }else if(global_plan_.size() > 50){
@@ -266,6 +258,17 @@ namespace pose_follower {
       }else{
         ff_goal_size = global_plan_.size() - 1;
       }
+
+      ROS_INFO("--->>>> I will stop at : %d", ff_goal_size);
+
+
+    bool in_goal_position = false;
+    while(fabs(diff.linear.x) <= tolerance_trans_ &&
+          fabs(diff.linear.y) <= tolerance_trans_ &&
+          fabs(diff.angular.z) <= tolerance_rot_)
+    {
+      
+
       //if(current_waypoint_ < global_plan_.size() - 5)//-1   -7
       if(current_waypoint_ < ff_goal_size)
       {

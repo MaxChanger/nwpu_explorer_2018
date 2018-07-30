@@ -73,14 +73,14 @@ public:
     // 机器原地 左方向 转圈 为了生成更好costmap 
     int i = 0;
     int flag = 1;
-    for(i = 0 ; i < 25 ; i++){   // 改成25  
+    for(i = 0 ; i < 25 ; i++){   // 25 大概转了180°
         geometry_msgs::Twist twist;//定义一个类型
         if(i%2 == 0){
           //flag = -flag;
         }
         twist.linear.x   =  0 ;
         twist.linear.y   =  0 ;
-        twist.angular.z  =  0.2 * flag ;//调整大小
+        twist.angular.z  =  0.2 ;//* flag ;//调整大小
         
         ROS_INFO("[Move By Itself] velocity pub x:%.2lf y:%.2lf z:%.2lf", twist.linear.x, twist.linear.y ,twist.angular.z);
         vel_pub_.publish(twist);//发送给底盘
@@ -197,15 +197,15 @@ public:
     // twist.linear.y   *= vel_factor * 0   ; // 大救援没有平移 故取消这个方向的速度
     // twist.angular.z  *= vel_factor * 7   ; // 调整速度大小
     
-     twist.linear.x   *= vel_factor * 1.2 ;
-     twist.linear.y   *= vel_factor * 0.9 ;
-     twist.angular.z  *= vel_factor * 1.0 ;
-    
+     twist.linear.x   *= vel_factor * 1.8;//* 1.2 ;
+     twist.linear.y   *= vel_factor * 1.5;//* 0.9 ;
+     twist.angular.z  *= vel_factor * 1.4;//* 1.0 ;
+    // if(fabs(twist.linear.x) > 0.5){
+    //   twist.linear.x = 0.5;
+    // }
     ROS_ERROR("[hector_exploration_controller] Velocity pub %lf %lf ==>%lf", twist.linear.x, twist.linear.y ,twist.angular.z);
 
-    if(fabs(twist.linear.x) > 0.5){
-      twist.linear.x = 0.5;
-    }
+
 
     vel_pub_.publish(twist);//发送给底盘
   }
