@@ -1,4 +1,15 @@
+# 依赖包
+
+```shell
+sudo apt install ros-kinetic-costmap-2d
+sudo apt install ros-kinetic-nav-core
+
+```
+
+
+
 # Hector_navigation
+
 Hector_navigation的代码从```roslaunch hector_exploration_node exploration_planner```开始
 这个launch打开了```exploration_node```节点，调用了配置文件```costmap.yaml```
 
@@ -32,7 +43,6 @@ planner_->doExploration(pose , res.trajectory.poses);
 然后得到的这个路径，这个路径既作为回调函数的返回值，也作为一个话题发布，加入订阅这个话题的节点的个数大于零，那么这个话题就会发布，比如rviz订阅这个话题。
 
 综上所述，exploration_node的作用，是一个统筹的作用，调用exploration_planner的函数来实现得到路径，接收来自客户端simple_exploration_controller探索路径的call，把速度发给底盘接收的话题。
-
 
 ---
 
@@ -75,7 +85,6 @@ vel_pub_ = nh.advertise<geometry_msgs::Twist>("/explorer_drive_controller/cmd_ve
 ```
 该函数调用path_follower里边的computeVelocityCommands（计算下一步的速度）computeVelocityCommands用了global_plan_的数据,最后生成要发布的速度存在了twist里边,通过"/explorer_drive_controller/cmd_vel"话题发送给底盘
 
-
 ---
 # hector_path_follower
 ```
@@ -111,7 +120,7 @@ bool HectorPathFollower::setPlan(const std::vector<geometry_msgs::PoseStamped>& 
       std::vector<geometry_msgs::PoseStamped>& transformed_plan )
 ```
 >transformed_plan.push_back(newer_pose);  
-  
+
 不断的向这个队列中压入新的值，在这个位置调用传入的是global_plan_
 
 
@@ -211,7 +220,7 @@ if(frontiers_found)//如果找到边界了
 ```
 if(!buildexploration_trans_array_(start,goals,true)) //建立了探索路径数组
 if(!getTrajectory(start,goals,plan))//得到了到目标点的路径
-``` 
+```
 ```
 bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamped &start, std::vector<geometry_msgs::PoseStamped> &plan)
 ```
