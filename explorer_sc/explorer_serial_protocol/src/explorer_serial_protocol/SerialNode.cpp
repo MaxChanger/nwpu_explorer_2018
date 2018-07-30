@@ -9,7 +9,7 @@ ExplorerSerialProtocol::ExplorerSerialProtocol(ros::NodeHandle _nh)
     this->serial_ptr = ::boost::make_shared<::serial::SerialPort>();
 
     ::serial::SerialParams param;
-    node_private.param("serial_file_name", param.serialPort, ::std::string("/dev/serial"));
+    node_private.param("serial_file_name", param.serialPort, ::std::string("/dev/explorer_serial"));
     this->serial_ptr->setCallbackFunc(::boost::bind(&ExplorerSerialProtocol::serial_get, this, _1));
     this->segment_get = node.subscribe("/explorer_serial", 1000, &ExplorerSerialProtocol::serial_send, this);
     this->serial_ptr->startThread();
