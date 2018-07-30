@@ -32,7 +32,7 @@ public:
     ::boost::asio::serial_port::parity          parity;         // 校验位
     ::boost::asio::serial_port::stop_bits       stopBits;       // 停止位
     SerialParams() :
-        serialPort("/dev/ttyUSB0"),
+        serialPort("/dev/serial"),
         baudRate(115200),
         flowControl((::boost::asio::serial_port::flow_control::type)0),
         parity((::boost::asio::serial_port::parity::type)0),
