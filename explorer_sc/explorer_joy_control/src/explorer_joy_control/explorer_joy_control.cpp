@@ -26,8 +26,8 @@ ExplorerTeleop::ExplorerTeleop():
     // 用于重新开启底盘
     relive(joy_msg->button4),*/
     linear_front_back(joy_msg->up_down),
-    speed_turn_left(joy_msg->left_right),
-    angular_left_right(joy_msg->left_axes_left_right),
+    angular_left_right(joy_msg->left_right),
+    speed_turn_left(joy_msg->left_axes_left_right),
     
     //机械臂半自动化控制
     /*arm_moveit_up_down(joy_msg->up_down),
