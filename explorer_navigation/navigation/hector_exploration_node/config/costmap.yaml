@@ -1,0 +1,77 @@
+
+
+global_costmap:
+
+  map_type: costmap #地图类型
+  track_unknown_space: true #跟踪未知空间 指定是否允许路径规划器在未知空间创建路径规划？？？
+  #如果为true，则映射消息中的未知值将直接转换为图层。否则，地图消息中的未知值将被转换为图层中的FREE_SPACE。
+  unknown_cost_value: 255　  #未知的成本价值
+  
+  obstacle_range: 5.0 #2.5 
+  #障碍的范围 表示２.5米以内的障碍物将被记录下来，超出不管．
+  raytrace_range: 5.0 #3.0
+  #光线追踪的范围 表示：清除前方３米之外的传感器信息
+  ## 这两个参数用来设置代价地图中障碍物的相关阈值。obstacle_range参数用来设置机器人检测障碍物的最大范围，设置为2.5意为在2.5米范围内检测到的障碍信息，才会在地图中进行更新。raytrace_range参数用来设置机器人检测自由空间的最大范围，设置为3.0意为在3米范围内，机器人将根据传感器的信息，清除范围内的自由空间。
+  ##obstacle_range 和raytrace_range：表示传感器的最大探测距离，并在代价地图中引入探测障碍物信息。obstacle_range用于障碍物探测，例如机器人检测到一个距离小于2.5m的障碍物，就会将这个障碍物引入到代价地图中 raytrace_range用于机器人运动过程中，实时清除代价地图中的障碍物，例如该机器人将清除前面距离3m（传感器获取的数据）的障碍物。并更新可移动的自由空间数据。其实我们用激光传感器是无法感知物体的形状和大小的，但是，这个测量结果足够定位的了。
+
+  # footprint: [[0.355, 0.27], #足迹
+  #             [-0.355, 0.27],
+  #             [-0.355, -0.27],
+  #             [0.355, -0.27]]
+  # footprint: [[0.23, 0.20], #足迹
+  #             [-0.23, 0.20],
+  #             [-0.23, -0.20],
+  #             [0.23, -0.20]]
+  footprint: [[0.36, 0.23], #足迹 长45 宽 40
+              [-0.25, 0.23],
+              [-0.25, -0.23],
+              [0.36, -0.23]]
+  #0.5 0.5 0.6
+  inflation_radius: 0.7  #0.32 ??? 20
+  #膨胀层半径：障碍物至少的距离
+  #给定机器人与障碍物之间必须要保持的最小距离。按照机器人的内切半径对障碍物进行膨胀处理。
+
+  #robot_radius:ir_of_robot   机器人的轮子半径，如果机器人有圆的轮子
+  ##footprint: [[x0, y0], [x1, y1], ... [xn, yn]]  
+  ##这些参数用来设置机器人在二维地图上的占用面积，如果机器人外形是圆形，则需要设置机器人的外形半径。所有参数以机器人的中心作为坐标（0，0）点。inflation_radius参数是设置障碍物的膨胀参数，也就是机器人应该与障碍物保持的最小安全距离，这里设置为0.55意为为机器人规划的路径应该与机器人保持0.55米以上的安全距离。
+
+  transform_tolerance: 0.3
+  inscribed_radius: 0.4  #0.3 0.5
+  #内切圆半径 
+  circumscribed_radius: 0.6  #0.32 0.60 
+  #外接圆半径 
+  #trinary_costmap: true #新的没有
+  #如果为true，则将所有映射消息值转换为NO_INFORMATION / FREE_SPACE / LETHAL_OBSTACLE（三个值）。如果错误，则可能有全部的中间值。
+
+
+  global_frame: /map
+  robot_base_frame: /base_link #机器人的底座
+  #定义机器人和地图之间的坐标变换，建立全局代价地图必须使用这个变换。
+
+  update_frequency: 8.0 #地图更新的频率 0.5  8.0
+  publish_frequency: 0.5 #发布频率参数定义了costmap更新显示的频率0.1   0.5
+
+  static_map: true 
+  #是否使用一个地图或者地图服务器来初始化全局代价地图，如果不使用静态地图，这个参数为false.
+  
+  rolling_window: false #滚动窗口 参数定义costmap将以机器人为中心显示地图
+  #如果static_map参数设置为true，则此参数必须设置为false
+  #width: 6.0
+  #height: 6.0
+  #resolution: 0.05
+  #"width,""height," and "resolution"设置costmap地图的宽度，高度还有单位
+
+  #Investigate what this actually does 调查这究竟是干什么的 
+  #成本比例因子
+  cost_scaling_factor: 10.0
+
+
+  #老版本有 辉巨自己加的
+  plugins:
+      - {name: static_map,       type: "costmap_2d::StaticLayer"}  
+      - {name: obstacles,        type: "costmap_2d::VoxelLayer"}  
+      - {name: inflation_layer,        type: "costmap_2d::InflationLayer"} 
+
+#There are two main ways to initialize a costmap_2d::Costmap2DROS object. The first is to seed it with a user-generated static map (see the map_server package for documentation on building a map). In this case, the costmap is initialized to match the width, height, and obstacle information provided by the static map. This configuration is normally used in conjunction with a localization system, like amcl, that allows the robot to register obstacles in the map frame and update its costmap from sensor data as it drives through its environment.
+
+#The second way to initialize a costmap_2d::Costmap2DROS object is to give it a width and height and to set the rolling_window parameter to be true. The rolling_window parameter keeps the robot in the center of the costmap as it moves throughout the world, dropping obstacle information from the map as the robot moves too far from a given area. This type of configuration is most often used in an odometric coordinate frame where the robot only cares about obstacles within a local area.

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/explorer_icon">
+        <file>image/explorer.jpg</file>
+    </qresource>
+</RCC>
