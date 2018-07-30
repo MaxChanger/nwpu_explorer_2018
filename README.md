@@ -1,4 +1,4 @@
-<img src="image/1.png" width="50%" hegiht="50%" align=center />
+![1](/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/image/1.png)
 
 # NWPU_Explorer
 
@@ -7,8 +7,6 @@ NWPU Explorer Code Repository — 西北工业大学舞蹈机器人基地救援�
 - 软件组：黄德慧、孙家岱、赵玉凡、刘靖泽
 - 电子组：梁成栋、谢凯、~~丁晓斌~~
 - 机械组：闫雨晨
-
-<img src="image/2.png" width="25%" hegiht="25%" align=center />
 
  
 
