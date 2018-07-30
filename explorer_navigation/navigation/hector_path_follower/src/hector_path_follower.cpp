@@ -218,8 +218,8 @@ namespace pose_follower {
     cmd_vel = test_vel;
 
 
-    /**********************孙*********************/
-    if (last_pose_time_ + ros::Duration(5.0) < ros::Time::now() )//在5秒内没有移动 
+    /**********************MaxChanger*********************/
+    if (last_pose_time_ + ros::Duration(2.0) < ros::Time::now() )//在5秒内没有移动 
     {
       geometry_msgs::Twist diff_tmp = diff2D(robot_pose, last_pose_);
       last_pose_ = robot_pose;
