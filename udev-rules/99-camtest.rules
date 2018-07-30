@@ -1,0 +1,41 @@
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-5/1-5:1.0/video4linux/*" SYMLINK+="videoUSB1-5"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-6/1-6:1.0/video4linux/*" SYMLINK+="videoUSB1-6"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.1/1-1.1:1.0/video4linux/*" SYMLINK+="videoUSBhub1-1"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1:1.0/video4linux/*" SYMLINK+="videoUSB1-1"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7:1.0/video4linux/*" SYMLINK+="videoUSB1-7"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-8/1-8:1.0/video4linux/*" SYMLINK+="videoUSB1-8"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.2/1-1.2:1.0/video4linux/*" SYMLINK+="videoUSBhub1-2"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.4/1-1.4:1.0/video4linux/*" SYMLINK+="videoUSBhub1-4"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.3/1-1.3:1.0/video4linux/*" SYMLINK+="videoUSBhub1-3"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-5/1-5.1/1-5.1:1.0/video4linux/*" SYMLINK+="videoUSBhub5-1"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-5/1-5.2/1-5.2:1.0/video4linux/*" SYMLINK+="videoUSBhub5-2"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-5/1-5.3/1-5.3:1.0/video4linux/*" SYMLINK+="videoUSBhub5-3"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-5/1-5.4/1-5.4:1.0/video4linux/*" SYMLINK+="videoUSBhub5-4"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-6/1-6.1/1-6.1:1.0/video4linux/*" SYMLINK+="videoUSBhub6-1"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-6/1-6.2/1-6.2:1.0/video4linux/*" SYMLINK+="videoUSBhub6-2"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-6/1-6.3/1-6.3:1.0/video4linux/*" SYMLINK+="videoUSBhub6-3"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-6/1-6.4/1-6.4:1.0/video4linux/*" SYMLINK+="videoUSBhub6-4"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.1/1-7.1:1.0/video4linux/*" SYMLINK+="videoUSBhub7-1"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.2/1-7.2:1.0/video4linux/*" SYMLINK+="videoUSBhub7-2"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.3/1-7.3:1.0/video4linux/*" SYMLINK+="videoUSBhub7-3"
+
+DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-7/1-7.4/1-7.4:1.0/video4linux/*" SYMLINK+="videoUSBhub7-4"
