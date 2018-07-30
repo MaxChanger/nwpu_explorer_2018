@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <arg name="map_file_path" default="/home/sun/Pictures/maps"/>
+  <arg name="map_file_path" default="~/Pictures/maps"/>
   <!-- 保存地图的位置 -->
   <arg name="map_file_base_name" default="Explorer_geotiff_mapper_two"/>
   <!-- 保存地图的名字 -->
