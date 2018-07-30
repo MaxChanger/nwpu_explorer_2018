@@ -16,6 +16,18 @@
 
   这个规则是给摄像头用的……
 
+  添加方法：
+  ```bash
+  sudo udevadmin info --query=all /dev/video*
+  #查看对应的摄像头的所有udev信息 注意DEVPATH信息
+  ```
+  ```bash
+  DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1:1.0/video4linux/*" SYMLINK+="videoUSB1-1"
+  #建立相应的usb口-摄像头映射，使摄像头和usb一一对应
+  DEVPATH=="/devices/pci0000:00/0000:00:14.0/usb1/1-1/1-1.2/1-1.2:1.0/video4linux/*" SYMLINK+="videoUSBhub1-2"
+  #对于hub状态下接入的摄像头，DEVPATH路径也会有所不同。接入多个hub的时候可以尝试用python生成rules文件以减少工作量。
+  ```
+
 
 
 - **20-usb-serials.rules**
