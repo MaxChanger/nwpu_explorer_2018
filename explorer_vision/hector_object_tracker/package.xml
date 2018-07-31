@@ -1,0 +1,51 @@
+<package>
+  <name>hector_object_tracker</name>
+  <version>0.3.2</version>
+  <description>hector_object_tracker is the core package of hector_worldmodel. It listens to percept message from
+     detectors (e.g. heat signatures of persons or recognitions of other objects of interest in the
+     scene) and fuses all information to a single worldmodel state. Objects will be tracked over time
+     and their states can be influenced by a couple of services.
+
+     The percept to object association problem is solved either automatically based on the Mahalanobis
+     distance, or a unique object_id can be given in the percept message.
+
+     If a hector_nav_msgs/GetDistanceToObstacle service is available, the object_tracker can optionally
+     deduce the depth of objects in the scene by projection to the nearest obstacle (wall).</description>
+  <maintainer email="meyer@fsr.tu-darmstadt.de">Johannes Meyer</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/hector_object_tracker</url>
+  <!-- <url type="bugtracker"></url> -->
+
+  <author>Johannes Meyer</author>
+
+  <!-- Dependencies which this package needs to build itself. -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Dependencies needed to compile this package. -->
+  <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>image_geometry</build_depend>
+  <build_depend>hector_worldmodel_msgs</build_depend>
+  <build_depend>hector_nav_msgs</build_depend>
+  <build_depend>hector_marker_drawing</build_depend>
+  <build_depend>cmake_modules</build_depend>
+
+  <!-- Dependencies needed after this package is compiled. -->
+  <run_depend>roscpp</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>image_geometry</run_depend>
+  <run_depend>hector_worldmodel_msgs</run_depend>
+  <run_depend>hector_nav_msgs</run_depend>
+  <run_depend>hector_marker_drawing</run_depend>
+
+  <!-- Dependencies needed only for running tests. -->
+  <!-- <test_depend>roscpp</test_depend> -->
+  <!-- <test_depend>tf</test_depend> -->
+  <!-- <test_depend>image_geometry</test_depend> -->
+  <!-- <test_depend>hector_worldmodel_msgs</test_depend> -->
+  <!-- <test_depend>hector_nav_msgs</test_depend> -->
+  <!-- <test_depend>hector_marker_drawing</test_depend> -->
+
+</package>
