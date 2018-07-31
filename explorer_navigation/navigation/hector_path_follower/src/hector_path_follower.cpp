@@ -122,8 +122,10 @@ namespace pose_follower {
   //计算速度的命令
   bool HectorPathFollower::computeVelocityCommands(geometry_msgs::Twist& cmd_vel,bool &isReached)
   {
-    if (global_plan_.size() == 0)//如果正常运行不会是零
-      return false;
+    if (global_plan_.size() == 0){  //如果正常运行不会是零
+        ROS_WARN("[In HectorPathFollower::computeVelocityCommands] global_plan_.size() == 0 ");
+        return false;
+    } 
 
     //get the current pose of the robot in the fixed frame //在固定架的机器人的当前位置
     tf::Stamped<tf::Pose> robot_pose;
@@ -165,8 +167,34 @@ namespace pose_follower {
     // }
     
     // /**************要删除还是要保留************/
+    
+    /**********************MaxChanger*********************/
+    if (last_pose_time_ + ros::Duration(1.5) < ros::Time::now() )//在2秒内没有移动 
+    {
+      geometry_msgs::Twist diff_tmp = diff2D(robot_pose, last_pose_);
+      last_pose_ = robot_pose;
+      last_pose_time_ = ros::Time::now();
+      if (fabs(diff_tmp.linear.x) <= tolerance_trans_ &&
+          fabs(diff_tmp.linear.y) <= tolerance_trans_ &&
+          fabs(diff_tmp.angular.z) <= tolerance_trans_ )//0.1
+      {
+        ROS_WARN("Sun:robot_pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
+        ROS_WARN("Sun:last_pose_ %f %f ==> %f", last_pose_.getOrigin().x(), last_pose_.getOrigin().y(), tf::getYaw(last_pose_.getRotation()));
+        ROS_WARN("Sun: diff_tmp x:%f y:%f ==> z:%f", diff_tmp.linear.x, diff_tmp.linear.y, diff_tmp.angular.z);
+        ROS_WARN("tolerance_trans_:%f ", tolerance_trans_);
+        
+        ROS_ERROR("HectorPathFollower: The robot don't move and we try to solve it");
+        cmd_vel.linear.x = -cmd_vel.linear.x;
+        cmd_vel.linear.y = -cmd_vel.linear.y;
+        cmd_vel.angular.z = -cmd_vel.angular.z; //既然不动 那么就是卡住了，速度往反方向走
+        isReached = true;//然后假设到达目的地，重新规划路径
+        return true;
+      }
+    }
+    /**************要删除还是要保留************/
 
-    ROS_WARN("global_plan_.size():%d current_waypoint_: %d",global_plan_.size(),current_waypoint_);
+
+    ROS_WARN("global_plan_.size():%d next_goal_point: %d",global_plan_.size(),current_waypoint_);
     ROS_INFO("HectorPathFollower: Current Robot Pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
     ROS_INFO("HectorPathFollower: Target Robot Pose %f %f ==> %f", target_pose.getOrigin().x(), target_pose.getOrigin().y(), tf::getYaw(target_pose.getRotation()));
    
@@ -218,30 +246,7 @@ namespace pose_follower {
     cmd_vel = test_vel;
 
 
-    /**********************MaxChanger*********************/
-    if (last_pose_time_ + ros::Duration(2.0) < ros::Time::now() )//在5秒内没有移动 
-    {
-      geometry_msgs::Twist diff_tmp = diff2D(robot_pose, last_pose_);
-      last_pose_ = robot_pose;
-      last_pose_time_ = ros::Time::now();
-      if (fabs(diff_tmp.linear.x) <= tolerance_trans_ &&
-          fabs(diff_tmp.linear.y) <= tolerance_trans_ &&
-          fabs(diff_tmp.angular.z) <= tolerance_trans_ )//0.1
-      {
-        ROS_WARN("Sun:robot_pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
-        ROS_WARN("Sun:last_pose_ %f %f ==> %f", last_pose_.getOrigin().x(), last_pose_.getOrigin().y(), tf::getYaw(last_pose_.getRotation()));
-        ROS_WARN("Sun: diff_tmp x:%f y:%f ==> z:%f", diff_tmp.linear.x, diff_tmp.linear.y, diff_tmp.angular.z);
-        ROS_WARN("tolerance_trans_:%f ", tolerance_trans_);
-        
-        ROS_ERROR("HectorPathFollower: The robot don't move and we try to solve it");
-        cmd_vel.linear.x = -cmd_vel.linear.x;
-        cmd_vel.linear.y = -cmd_vel.linear.y;
-        cmd_vel.angular.z = -cmd_vel.angular.z; //既然不动 那么就是卡住了，速度往反方向走
-        isReached = true;//然后假设到达目的地，重新规划路径
-        return true;
-      }
-    }
-    /**************要删除还是要保留************/
+    
 
 
       int ff_goal_size = 1;
@@ -252,14 +257,14 @@ namespace pose_follower {
       }else if(global_plan_.size() > 50){
         ff_goal_size = global_plan_.size() * 0.8; 
       }else if(global_plan_.size() > 10){
-        ff_goal_size = global_plan_.size() * 0.7; 
+        ff_goal_size = global_plan_.size() - 5; 
       }else if (global_plan_.size() > 5){
         ff_goal_size = global_plan_.size() - 3; 
       }else{
         ff_goal_size = global_plan_.size() - 1;
       }
 
-      ROS_INFO("--->>>> I will stop at : %d", ff_goal_size);
+      ROS_INFO("--->>>>if biggrer than %d I will stop ", ff_goal_size);
 
 
     bool in_goal_position = false;
@@ -272,7 +277,13 @@ namespace pose_follower {
       //if(current_waypoint_ < global_plan_.size() - 5)//-1   -7
       if(current_waypoint_ < ff_goal_size)
       {
-        current_waypoint_ +=5;//+1  +7
+        // if(ff_goal_size < 5){
+        //   current_waypoint_ +=1;
+        // }else if(ff_goal_size < 10){
+        //   current_waypoint_ +=3;
+        // }else{
+          current_waypoint_ +=5;//+1  +7
+        // }
         ROS_WARN("current_waypoint_: %d", current_waypoint_);
         tf::poseStampedMsgToTF(global_plan_[current_waypoint_], target_pose);
         diff = diff2D(target_pose, robot_pose);

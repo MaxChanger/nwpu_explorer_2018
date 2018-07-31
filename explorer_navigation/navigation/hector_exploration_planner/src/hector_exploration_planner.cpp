@@ -456,7 +456,7 @@ bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamp
   }
   if(!getTrajectory(start,goals,plan))
   {
-    ROS_WARN("[hector_exploration_planner] inner-exploration: could not plan to inner-frontier. exploration failed!");
+    ROS_WARN("[hector_exploration_planner] ");
     return false;
   }
 
@@ -1377,10 +1377,12 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
       }
     }
 
-    // This happens when there is no valid exploration transform data at the start point for example 例如，在起始点没有有效的勘探转换数据时会发生这种情况
+    // This happens when there is no valid exploration transform data at the start point for example 
+    // 例如，在起始点没有有效的勘探转换数据时会发生这种情况
     if(maxDelta == 0)
     {
-      ROS_WARN("[hector_exploration_planner] No path to the goal could be found by following gradient!");//没有路径的目标可以通过下面的梯度找到！
+      ROS_WARN("[hector_exploration_planner] No path to the goal could be found by following gradient!");
+      //没有路径的目标可以通过下面的梯度找到！
       return false;
     }
 
