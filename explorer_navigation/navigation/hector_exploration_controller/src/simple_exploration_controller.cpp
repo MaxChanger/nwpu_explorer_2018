@@ -61,7 +61,7 @@ public:
 
     isReached = true;//判断是否到达goals
 
-    exploration_plan_generation_timer_ = nh.createTimer(ros::Duration(2.0), &SimpleExplorationController::timerPlanExploration, this, false );//每过多少秒调用一次 生产plan的函数  在加上isReach之后其实多少并没有多大影响  //目前是7.0 白色工控机是0.3
+    exploration_plan_generation_timer_ = nh.createTimer(ros::Duration(0.5), &SimpleExplorationController::timerPlanExploration, this, false );//每过多少秒调用一次 生产plan的函数  在加上isReach之后其实多少并没有多大影响  //目前是7.0 白色工控机是0.3
 
     // sun_cmd_vel_generator_timer_ = nh.createTimer(ros::Duration(10.0), &SimpleExplorationController::timerCmd_Sun, this, false );
     // 每10秒钟回调一次 这个是每隔一定时间之后 发送一个速度 让他动一下
@@ -124,18 +124,18 @@ public:
     ROS_WARN("In timer CmdVel Generation");
     ROS_WARN("isReached :%d", isReached);
 
-    // if(isReached){
-    //   ROS_ERROR("return in timer CmdVel Generation");
-    //   return;
-    // }
+    if(isReached){
+      ROS_ERROR("Due to reached goal -> return in timer CmdVel Generation ");
+      return;
+    }
     call_timerCmdVelGeneration_counter ++;
 
     geometry_msgs::Twist twist; // 定义一个类型
 
     path_follower_.computeVelocityCommands(twist,isReached);
     
-    if ( !(twist.linear.x == 0 && twist.linear.y == 0 && twist.angular.z == 0) 
-        && fabs(twist.linear.x) < 0.1 && fabs(twist.linear.y) < 0.1 && fabs(twist.angular.z) < 0.3 ) // 这个条件参考的是follower里边的条件
+    if ( (twist.linear.x == 0 && twist.linear.y == 0 && twist.angular.z == 0) 
+       || ( fabs(twist.linear.x) < 0.1 && fabs(twist.linear.y) < 0.1 && fabs(twist.angular.z) < 0.3) ) // 这个条件参考的是follower里边的条件
     {	
       isReached = true;    //判断是否到达目标点 在满足上边的几个条件的情况下 判断为到达
       return;
