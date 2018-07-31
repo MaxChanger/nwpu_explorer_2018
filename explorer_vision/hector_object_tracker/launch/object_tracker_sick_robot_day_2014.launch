@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node pkg="hector_object_tracker" type="object_tracker" name="object_tracker" output="screen">
+      <param name="project_objects" type="bool" value="true" />
+      <param name="angle_variance" type="double" value="0.121846968"/>
+      <param name="publish_interval" type="double" value="1.0" />
+
+      <rosparam>
+        unload_station:
+          pending_support: 1.0
+          active_support: 10.0
+          min_height: 0.5
+          max_height: 1.5
+          marker_color: [0.8, 0.0, 0.0]
+          with_orientation: true
+          #get_normal_service: hector_octomap_server/get_normal
+          min_distance_between_objects: 1.0
+        target_fiducial:
+          pending_support: 1.0
+          active_support: 10.0
+          min_height: -0.4
+          max_height: 0.5
+          with_orientation: true
+          marker_color: [0.0, 0.0, 0.8]
+        verification_services:
+          allow_none: true
+      </rosparam>
+
+      <remap from="get_distance_to_obstacle" to="/hector_map_server/get_distance_to_obstacle" />
+      <remap from="visualization_marker" to="worldmodel/visualization_marker" />
+      <remap from="visualization_marker_array" to="worldmodel/visualization_marker_array" />
+    </node>
+</launch>
