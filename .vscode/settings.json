@@ -5,6 +5,8 @@
         "/opt/ros/kinetic/lib/python2.7/dist-packages"
     ],
     "files.associations": {
-        "initializer_list": "cpp"
+        "initializer_list": "cpp",
+        "future": "cpp",
+        "system_error": "cpp"
     }
 }
