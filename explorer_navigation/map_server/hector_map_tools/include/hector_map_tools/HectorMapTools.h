@@ -216,7 +216,7 @@ public:
       const std::vector<int8_t>& data = map_ptr_->data;
 
       for(unsigned int i = 0; i < end; ++i){
-        if (data[offset] == 100){
+        if (data[offset] >=80){
           return static_cast<int>(offset);
         }
 
