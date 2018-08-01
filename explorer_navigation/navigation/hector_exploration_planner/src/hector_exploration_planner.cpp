@@ -1,31 +1,3 @@
-//=================================================================================================
-// Copyright (c) 2012, Mark Sollweck, Stefan Kohlbrecher, Florian Berz TU Darmstadt
-// All rights reserved.
-
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the Simulation, Systems Optimization and Robotics
-//       group, TU Darmstadt nor the names of its contributors may be used to
-//       endorse or promote products derived from this software without
-//       specific prior written permission.
-
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//=================================================================================================
-
 /**
  * 该软件包提供了一个规划器，可以为探索未知环境生成目标和相关路径。 该包不提供ROS节点，而是可以在ROS节点内部使用的库
  * 可以调用该库中的函数 
@@ -37,7 +9,6 @@
  *  static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;//内切 膨胀障碍
  *  static const unsigned char FREE_SPACE = 0;
  *  }
- * 
  */
 
 #include <hector_exploration_planner/hector_exploration_planner.h>
@@ -51,8 +22,8 @@
 #include <Eigen/Geometry>
 #include <hector_exploration_planner/ExplorationPlannerConfig.h>
 
-#define STRAIGHT_COST 100   //120   //直接成本 白工控机写的120 --100
-#define DIAGONAL_COST 170   //156   //对角线成本 白工控机写的156 --141
+#define STRAIGHT_COST 100//120   //直接成本 白工控机写的120 --100
+#define DIAGONAL_COST 170//156   //对角线成本 白工控机写的156 --141
 
 //#define STRAIGHT_COST 3
 //#define DIAGONAL_COST 4
@@ -73,9 +44,6 @@ HectorExplorationPlanner::~HectorExplorationPlanner()
   this->deleteMapData();
 }//析构函数 最后调用清除数据内存空间
 
-
-
-
 HectorExplorationPlanner::HectorExplorationPlanner(std::string name, costmap_2d::Costmap2DROS *costmap_ros_in) :
 costmap_ros_(NULL), initialized_(false) 
 {
@@ -83,9 +51,6 @@ costmap_ros_(NULL), initialized_(false)
   //把exploration_node里边的costmap_2d_ros_传入给costmap_ros_in
   //然后costmap_ros_in后来又给了costmap_ros_（这个量是在hector_exploration_planner里边的一个量）
 }
-
-
-
 
 void HectorExplorationPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros_in)
 {
@@ -109,7 +74,8 @@ void HectorExplorationPlanner::initialize(std::string name, costmap_2d::Costmap2
     return;//返回 不会执行下面步骤
   }
 
-  ROS_INFO("[hector_exploration_planner] Initializing Hector Exploration Planner"); //正常情况下会提示正在初始化
+  ROS_INFO("[hector_exploration_planner] Initializing HectorExplorationPlanner");
+  //正常情况下会提示正在初始化
 
   // initialize costmaps    初始化代价地图
   this->costmap_ros_ = costmap_ros_in;
@@ -124,11 +90,10 @@ void HectorExplorationPlanner::initialize(std::string name, costmap_2d::Costmap2
   observation_pose_pub_ = private_nh_.advertise<geometry_msgs::PoseStamped>("observation_pose", 1, true);//观察姿势
 
   goal_pose_pub_ = private_nh_.advertise<geometry_msgs::PoseStamped>("goal_pose", 1, true);
-
-  
-  ///发布目标位置等可视化信息  在rviz中可以看到
+  // 发布目标位置等可视化信息  在rviz中可以看到
 
   ignore_all_ = false;
+ 
   
   dyn_rec_server_.reset(new dynamic_reconfigure::Server<hector_exploration_planner::ExplorationPlannerConfig>(ros::NodeHandle("~/hector_exploration_planner")));//动态调参
 
@@ -186,6 +151,7 @@ bool HectorExplorationPlanner::makePlan(const geometry_msgs::PoseStamped &start,
   {
       ROS_ERROR("Trying to plan with invalid quaternion, this shouldn't be done anymore, but we'll start exploration for now.");
       // 尝试用无效四元数进行规划，这不应该再做了，但是我们现在就开始探索。
+
       return doExploration(start,plan);
   }
 
@@ -251,9 +217,11 @@ bool HectorExplorationPlanner::makePlan(const geometry_msgs::PoseStamped &start,
       last_pose = plan[plan.size()-1];
       last_pose.pose.orientation = second_last_pose.pose.orientation;
       plan[plan.size()-1] = last_pose;
+
+
   }
 
-  ROS_INFO("[hector_exploration_planner] planning: plan has been found! plan.size: %u ", (unsigned int)plan.size());
+  ROS_INFO("[hector_exploration_planner] planning: plan has been found! plansize: %u ", (unsigned int)plan.size());
   return true;
 }
 
@@ -290,14 +258,17 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
       //找到靠近路径的边界
       //以走过的路径为基准点 进行下一步的探索
 
-      if (!frontiers_found){
+      if (!frontiers_found)
+      {
         ROS_WARN("Close Exploration desired, but no frontiers found. Falling back to normal exploration!");
         //想要进行接近与原来路径的探索 然而失败之后就返回正常的探索模式 
         //需要进行严密勘探，但没有发现边界。落回正常的探索！ 
         frontiers_found = findFrontiers(goals);
       }
 
-    }else{
+    }
+    else
+    {
       frontiers_found = findFrontiers(goals);//这种是没有依靠原路径的搜索
     }
 
@@ -315,16 +286,16 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
     }
     
   
+
     // make plan
-    if(!buildexploration_trans_array_(start,goals,true)) // 生产了可到达的点goals
+    if(!buildexploration_trans_array_(start,goals,true))
     {
       return false;
     }
-
     ROS_ERROR("[Sun_exploration_planner] position :\n x:%f \t y:%f \t z:%f \n" ,
               start.pose.position.x ,start.pose.position.y ,start.pose.position.z);
 
-    // for(unsigned int i = 0; i < goals.size(); ++i)// 输出所有找到的goals 但是路径只是去其中一个goal
+    // for(unsigned int i = 0; i < goals.size(); ++i)// 输出所有找到的goals 但是路径只是去其中一个
     // {
     //       ROS_ERROR("[Sun_exploration_planner] goals[%d] :\n x:%f \t y:%f \t z:%f " ,
     //         i, goals[i].pose.position.x ,goals[i].pose.position.y ,goals[i].pose.position.z);
@@ -355,7 +326,7 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
 
     for(unsigned int i = 0; i < plan.size(); ++i)
     {
-          ROS_ERROR("[Sun_exploration_planner] plan_route_point[%d] :\n x:%f \t y:%f \t z:%f " ,
+      ROS_ERROR("[Sun_exploration_planner] plan[%d] :\n x:%f \t y:%f \t z:%f " ,
             i, plan[i].pose.position.x ,plan[i].pose.position.y ,plan[i].pose.position.z);
     }
 
@@ -456,7 +427,7 @@ bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamp
   }
   if(!getTrajectory(start,goals,plan))
   {
-    ROS_WARN("[hector_exploration_planner] ");
+    ROS_WARN("[hector_exploration_planner] inner-exploration: could not plan to inner-frontier. exploration failed!");
     return false;
   }
 
@@ -487,7 +458,8 @@ bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamp
 
 bool HectorExplorationPlanner::getObservationPose(const geometry_msgs::PoseStamped& observation_pose, const double desired_distance, geometry_msgs::PoseStamped& new_observation_pose)
 {
-  // We call this from inside the planner, so map data setup and reset already happened 我们从计划者内部调用它，所以地图数据的设置和重置已经发生了。
+  // We call this from inside the planner, so map data setup and reset already happened 
+  // 我们从计划者内部调用它，所以地图数据的设置和重置已经发生了。
   //this->setupMapData();
   //resetMaps();
 
@@ -1377,12 +1349,10 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
       }
     }
 
-    // This happens when there is no valid exploration transform data at the start point for example 
-    // 例如，在起始点没有有效的勘探转换数据时会发生这种情况
+    // This happens when there is no valid exploration transform data at the start point for example 例如，在起始点没有有效的勘探转换数据时会发生这种情况
     if(maxDelta == 0)
     {
-      ROS_WARN("[hector_exploration_planner] No path to the goal could be found by following gradient!");
-      //没有路径的目标可以通过下面的梯度找到！
+      ROS_WARN("[hector_exploration_planner] No path to the goal could be found by following gradient!");//没有路径的目标可以通过下面的梯度找到！
       return false;
     }
 
