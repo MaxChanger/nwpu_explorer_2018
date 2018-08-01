@@ -272,7 +272,12 @@ namespace pose_follower {
         ff_goal_size = global_plan_.size() - 1;
       }
 
-      ROS_INFO("--->>>>if biggrer than %d I will stop ", ff_goal_size);
+    if(ff_goal_size > 10){
+      ff_goal_size = ( ff_goal_size / 5 ) * 5;
+    }
+
+    ROS_INFO("--->>>>if biggrer than %d I will stop ", ff_goal_size);
+
 
 
     bool in_goal_position = false;
@@ -292,7 +297,7 @@ namespace pose_follower {
         // }else{
           current_waypoint_ +=5;//+1  +7
         // }
-        ROS_WARN("current_waypoint_: %d", current_waypoint_);
+        ROS_WARN("current_waypoint_: %d  ff_goal_size: %d" , current_waypoint_,ff_goal_size);
         tf::poseStampedMsgToTF(global_plan_[current_waypoint_], target_pose);
         diff = diff2D(target_pose, robot_pose);
       }
