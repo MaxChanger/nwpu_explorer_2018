@@ -122,7 +122,7 @@ namespace hector_geotiff
         ROS_INFO("No plugins loaded for geotiff node");
       }
 
-      ROS_INFO("Geotiff node started");
+      ROS_WARN("Geotiff node started, successed init\n\n");
     }//初始化
 
     ~MapGenerator()
@@ -136,9 +136,7 @@ namespace hector_geotiff
     void writeGeotiff()
     {
       ros::Time start_time(ros::Time::now());//获取当前时间
-
       std::stringstream ssStream; //定义一个字符串数组
-
       ///ROS_ERROR("In geotiff_node.cpp  in writeGeotiff()  first!!!");
 
       nav_msgs::GetMap srv_map;//定义一个新的地图类型的变量 用来存储通过话题订阅 传入的地图数据
@@ -153,7 +151,7 @@ namespace hector_geotiff
          * 个服务的客户端 通过call("map") 向server发送命令请求得到地图的命令
          * 
          */
-        ROS_INFO("GeotiffNode: Map service called successfully");
+        ROS_INFO("\n\nGeotiffNode: Call map service to acquire map successfully");
         const nav_msgs::OccupancyGrid &map(srv_map.response.map);//map在这 得到的回复存到map了
 
 
@@ -176,14 +174,17 @@ namespace hector_geotiff
         if (map_file_name.empty())
           map_file_name = "GeoTiffMap";
 
-        geotiff_writer_.setMapFileName(map_file_name);//设置Map名称
 
+
+
+
+        geotiff_writer_.setMapFileName(map_file_name);//设置Map名称
 
         bool transformSuccess = geotiff_writer_.setupTransforms(map);//进行tf变 ？？？map是谁
 
         if (!transformSuccess)//如果tf变换没有成功 输出错误信息 返回
         {
-          ROS_INFO("Couldn't set map transform");
+          ROS_INFO("GeotiffNode: Couldn't set map transform");
           return;
         }
 
@@ -294,6 +295,7 @@ namespace hector_geotiff
 
       geotiff_writer_.writeGeotiffImage();
       running_saved_map_num_++;
+      ROS_WARN("geotiff have write %d maps",running_saved_map_num_);
 
       ros::Duration elapsed_time(ros::Time::now() - start_time);
 
