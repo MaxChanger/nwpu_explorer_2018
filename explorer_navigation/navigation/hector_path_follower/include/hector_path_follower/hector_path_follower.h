@@ -46,7 +46,7 @@ namespace pose_follower {
       void initialize(tf::TransformListener* tf);
       bool isGoalReached();
       bool setPlan(const std::vector<geometry_msgs::PoseStamped>& global_plan);
-      bool computeVelocityCommands(geometry_msgs::Twist& cmd_vel);
+      bool computeVelocityCommands(geometry_msgs::Twist& cmd_vel,bool &isReached);
 
     private:
       inline double sign(double n){
