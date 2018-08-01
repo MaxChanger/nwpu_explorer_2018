@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+	<name>ros_ssd</name>
+	<version>0.0.1</version>
+	<description>The a package that wraps py-faster-rcnn in a ROS node.</description>
+
+	<maintainer email="hdh@todo.com">hdh</maintainer>
+
+	<license>MIT</license>
+
+	<buildtool_depend>catkin</buildtool_depend>
+	<build_depend>sensor_msgs</build_depend>
+	<build_depend>message_generation</build_depend>
+
+	<run_depend>cv_bridge</run_depend>
+	<run_depend>sensor_msgs</run_depend>
+	<run_depend>message_runtime</run_depend>
+	<!-- The dependencies are not included yet, but when the py-faster-rcnn demo.py runs this should also run.-->
+
+	<export> </export>
+</package>
