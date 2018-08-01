@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<launch>
+<node pkg="hector_object_tracker" name="victim" type="victim_service">
+</node>
+</launch>
