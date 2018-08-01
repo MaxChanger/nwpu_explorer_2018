@@ -1,5 +1,0 @@
-# This service sets the state of the object with object_id object_id
-
-string object_id
-ObjectState new_state
----

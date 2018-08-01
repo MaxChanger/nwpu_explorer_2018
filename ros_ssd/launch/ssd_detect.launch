@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+    <node name="ssd_detect" pkg="ros_ssd" type="ssd_detect.py" 
+        args="--cameraSubscriber /camera/image_raw/compressed
+              --numclass 2"
+        output="screen"/>
+</launch>

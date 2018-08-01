@@ -1,5 +1,0 @@
-# This service sets the name of the object with object_id object_id
-
-string object_id
-string name
----
