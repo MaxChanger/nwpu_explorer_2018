@@ -344,7 +344,7 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
     //       ROS_ERROR("[Sun_exploration_planner] plan_route_point[%d] :\n x:%f \t y:%f \t z:%f " ,
     //         i, plan[i].pose.position.x ,plan[i].pose.position.y ,plan[i].pose.position.z);
     // }
-    int i = plan.size();
+    int i = plan.size()-1;
     ROS_ERROR("[Sun_exploration_planner] plan_route_point[%d] :\n x:%f \t y:%f \t z:%f " ,
             i, plan[i].pose.position.x ,plan[i].pose.position.y ,plan[i].pose.position.z);
     
