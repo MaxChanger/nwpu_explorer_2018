@@ -258,13 +258,13 @@ namespace pose_follower {
 
 
       int ff_goal_size = 1;
-      if(global_plan_.size() > 150){
+      if(global_plan_.size() >= 150){
         ff_goal_size = global_plan_.size() - 20 ; 
-      }else if(global_plan_.size() > 80){
+      }else if(global_plan_.size() >= 80){
         ff_goal_size = global_plan_.size() * 0.9; 
-      }else if(global_plan_.size() > 50){
+      }else if(global_plan_.size() >= 50){
         ff_goal_size = global_plan_.size() * 0.8; 
-      }else if(global_plan_.size() > 10){
+      }else if(global_plan_.size() >= 10){
         ff_goal_size = global_plan_.size() - 5; 
       }else if (global_plan_.size() > 5){
         ff_goal_size = global_plan_.size() - 3; 

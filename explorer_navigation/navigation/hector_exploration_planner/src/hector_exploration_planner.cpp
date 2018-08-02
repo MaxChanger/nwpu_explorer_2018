@@ -294,7 +294,7 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
       return false;
     }
 
-    ROS_ERROR("[Sun_exploration_planner] position :\n x:%f \t y:%f \t z:%f \n" ,
+    ROS_ERROR("[Sun_exploration_planner] current position :\n x:%f \t y:%f \t z:%f \n" ,
               start.pose.position.x ,start.pose.position.y ,start.pose.position.z);
 
     // for(unsigned int i = 0; i < goals.size(); ++i)// 输出所有找到的goals 但是路径只是去其中一个goal
@@ -1368,7 +1368,7 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
     // 例如，在起始点没有有效的勘探转换数据时会发生这种情况
     if(maxDelta == 0)
     {
-      ROS_WARN("[hector_exploration_planner] In getTrajectory ：No path to the goal could be found by following gradient!");
+      ROS_WARN("[hector_exploration_planner] In getTrajectory: No path to the goal could be found by following gradient!");
       //没有路径的目标可以通过下面的梯度找到！
       return false;
     }

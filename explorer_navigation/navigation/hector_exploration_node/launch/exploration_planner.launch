@@ -26,7 +26,7 @@
   <!-- 打开这个记录路径的节点 trajectory 用在了 inner explorer mode -->
   <arg name="trajectory_source_frame_name" default="/base_link"/>
   <arg name="trajectory_update_rate" default="4"/><!--[hz] -->
-  <arg name="trajectory_publish_rate" default="0.25"/><!--[hz] -->
+  <arg name="trajectory_publish_rate" default="2"/><!--[hz] -->
 
   <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server" output="screen">
 
