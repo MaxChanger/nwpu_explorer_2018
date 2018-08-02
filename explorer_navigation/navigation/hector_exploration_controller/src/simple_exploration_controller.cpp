@@ -18,8 +18,7 @@
 #include <cmath>
 
 const float vel_factor = 1 ;
-// int call_timerCmdVelGeneration_counter = 0;
-bool flag = true;
+bool flag = true; // 用来给每10s调用一次的移动函数 一次正转一次反转
 
 class SimpleExplorationController
 {
@@ -50,7 +49,7 @@ public:
 
         twist.linear.x   =  0 ;
         twist.linear.y   =  0 ;
-        twist.angular.z  =  0.2 ;
+        twist.angular.z  =  0.3 ;
         
         ROS_INFO("[Move By Itself] velocity pub x:%.2lf y:%.2lf z:%.2lf", twist.linear.x, twist.linear.y ,twist.angular.z);
         vel_pub_.publish(twist);//发送给底盘
@@ -61,7 +60,7 @@ public:
 
     isReached = true;//判断是否到达goals
 
-    exploration_plan_generation_timer_ = nh.createTimer(ros::Duration(0.5), &SimpleExplorationController::timerPlanExploration, this, false );//每过多少秒调用一次 生产plan的函数  在加上isReach之后其实多少并没有多大影响  //目前是7.0 白色工控机是0.3
+    exploration_plan_generation_timer_ = nh.createTimer(ros::Duration(0.4), &SimpleExplorationController::timerPlanExploration, this, false );//每过多少秒调用一次 生产plan的函数  在加上isReach之后其实多少并没有多大影响  //目前是7.0 白色工控机是0.3
 
     sun_cmd_vel_generator_timer_ = nh.createTimer(ros::Duration(10.0), &SimpleExplorationController::timerCmd_Sun, this, false );
     // 每10秒钟回调一次 这个是每隔一定时间之后 发送一个速度 让他动一下
@@ -80,7 +79,7 @@ public:
       ROS_WARN("Because don't reached goal ------------> Return\n\n");
         return;
     }else{
-      ROS_ERROR("Reach Goal");
+      ROS_ERROR("Reach Goal\n\n");
     }
 
     hector_nav_msgs::GetRobotTrajectory srv_exploration_plan;
@@ -129,8 +128,6 @@ public:
     //   return;
     // }
     
-    // call_timerCmdVelGeneration_counter ++;
-
     geometry_msgs::Twist twist; // 定义一个类型
 
     path_follower_.computeVelocityCommands(twist,isReached);
@@ -166,13 +163,11 @@ public:
     
      twist.linear.x   *= vel_factor * 0.33;//* 1.2 ;
      twist.linear.y   *= vel_factor * 0.27;//* 0.9 ;
-     twist.angular.z  *= vel_factor * 0.25;//* 1.0 ;
+     twist.angular.z  *= vel_factor * 0.30;//* 1.0 ;
     // if(fabs(twist.linear.x) > 0.5){
     //   twist.linear.x = 0.5;
     // }
     ROS_ERROR("[hector_exploration_controller] Velocity pub %lf %lf ==>%lf", twist.linear.x, twist.linear.y ,twist.angular.z);
-
-
 
     vel_pub_.publish(twist);//发送给底盘
   }
@@ -184,24 +179,24 @@ public:
 
   void timerCmd_Sun(const ros::TimerEvent& e)
   {
-     ROS_WARN("timerCmd_Sun");
+    ROS_WARN("In timer Cmd_Sun");
     geometry_msgs::Twist twist; //定义一个类型
 
     if(flag == true){
-      twist.linear.x   =  0.1 ;   //小救援给这个速度有点大
+      twist.linear.x   =  0.1 ;  
       twist.linear.y   =  0.1 ;
-      twist.angular.z  =  0.3 ;   //调整大小
+      twist.angular.z  =  0.3 ;   
       flag = false;
     }else{
-      twist.linear.x   =  -0.1 ;   //小救援给这个速度有点大
+      twist.linear.x   =  -0.1 ;  
       twist.linear.y   =  -0.1 ;
-      twist.angular.z  =  -0.3 ;   //调整大小
+      twist.angular.z  =  -0.3 ;  
       flag = true;
     }
     
-    ROS_ERROR("[timerCmd_Sun] Velocity pub %.2lf %.2lf ==>%.2lf", twist.linear.x, twist.linear.y ,twist.angular.z);
-    
     vel_pub_.publish(twist);//发送给底盘
+    ROS_ERROR("\n\n[timerCmd_Sun] Velocity pub %.2lf %.2lf ==>%.2lf\n\n", twist.linear.x, twist.linear.y ,twist.angular.z);
+    
     sleep(1);
   }
 
