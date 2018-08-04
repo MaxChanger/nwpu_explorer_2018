@@ -35,7 +35,7 @@
 #include<Eigen/Core>
 
 class HectorMapTools{
-public:
+public: 
 
   template<typename ConcreteScalar>
   class CoordinateTransformer{
@@ -136,13 +136,16 @@ public:
 
       Eigen::Vector2i begin_map (world_map_transformer_.getC2Coords(begin_world).cast<int>());
       Eigen::Vector2i end_map (world_map_transformer_.getC2Coords(end_world).cast<int>());
+//Bresenhami  计算机图形学中的一种算法，主要用于画直线
       float dist = checkOccupancyBresenhami(begin_map, end_map, &end_point_map);
+	  
 
       if (hitCoords != 0){
         *hitCoords = world_map_transformer_.getC1Coords(end_point_map.cast<float>());
       }
 
       return world_map_transformer_.getC1Scale(dist);
+	  
     }
 
     inline float checkOccupancyBresenhami( const Eigen::Vector2i& beginMap, const Eigen::Vector2i& endMap, Eigen::Vector2i* hitCoords = 0, unsigned int max_length = UINT_MAX){
@@ -154,20 +157,21 @@ public:
       int sizeY = map_ptr_->info.height;
 
       //check if beam start point is inside map, cancel update if this is not the case
-      if ((x0 < 0) || (x0 >= sizeX) || (y0 < 0) || (y0 >= sizeY)) {
+      if ((x0 >= sizeX) || (y0 >= sizeY)) {
+        ROS_ERROR("x0: %d y0: %d", x0,y0);
         return -1.0f;
       }
 
       int x1 = endMap[0];
       int y1 = endMap[1];
 
-      //std::cout << " x: "<< x1 << " y: " << y1 << " length: " << length << "     ";
+      std::cout << " x: "<< x1 << " y: " << y1 << std::endl;
 
       //check if beam end point is inside map, cancel update if this is not the case
-      if ((x1 < 0) || (x1 >= sizeX) || (y1 < 0) || (y1 >= sizeY)) {
+      if ((x1 >= sizeX) || (y1 >= sizeY)) {
+        ROS_ERROR("x1 : %d y1 : %d",x1,y1);
         return -1.0f;
       }
-
       int dx = x1 - x0;
       int dy = y1 - y0;
 
@@ -203,8 +207,8 @@ public:
         return distMap;
       }
 
+      ROS_ERROR("can't find a line to point");
       return -1.0f;
-
       //unsigned int endOffset = endMap.y() * sizeX + endMap.x();
       //this->bresenhamCellOcc(endOffset);
     }
