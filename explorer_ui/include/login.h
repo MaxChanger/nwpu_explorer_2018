@@ -21,6 +21,7 @@ public:
     explicit Login(QWidget *parent = 0);
     ~Login();
     void ReadSettings();
+    void WriteSettings();
 
     QString usrn;
     QString ipad;
@@ -37,7 +38,8 @@ private Q_SLOTS:
 
 private:
     Ui::Login *ui;
-   // MainInterface robotinterface;
+
+    // MainInterface robotinterface;
 
     void enterControlInterface();
   // QLabel *passlabel;//

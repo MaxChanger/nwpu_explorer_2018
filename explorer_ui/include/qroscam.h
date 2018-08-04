@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMainWindow>
 #include <QProcess>
+#include <QSettings>
 #include "qusbcam.h"
 
 using namespace qusbcam;
@@ -21,6 +22,8 @@ public:
     ~QRoscam();
 
     QUsbcam qusbcam;
+    void ReadSettings();
+    void WriteSettings();
 
 private Q_SLOTS:
     void on_rqtButton_clicked();
@@ -41,8 +44,13 @@ private Q_SLOTS:
 
     void on_video5Button_clicked();
 
+    void on_customButton_clicked();
+
+    void on_saveButton_clicked();
+
 private:
     Ui::QRoscam *ui;
+
     QString bash_command;
     QString usrn;
     QString ipad;

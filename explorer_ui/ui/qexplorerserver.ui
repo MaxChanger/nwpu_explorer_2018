@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
-    <height>351</height>
+    <width>1012</width>
+    <height>436</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,100 +20,162 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <widget class="QWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>30</y>
-      <width>371</width>
-      <height>251</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_12">
          <item>
-          <widget class="QPushButton" name="serverButton">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLineEdit" name="serverEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="serverButton">
+             <property name="text">
+              <string>server启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLineEdit" name="rplidarEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="rplidarButton">
+             <property name="text">
+              <string>rplidar启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLineEdit" name="slamEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="slamButton">
+             <property name="text">
+              <string>slam启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QLineEdit" name="hectorConEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="hectorConButton">
+             <property name="text">
+              <string>hectorContorller启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_13">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QLineEdit" name="plannerEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="plannerButton">
+             <property name="text">
+              <string>planner启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="QLineEdit" name="qrcodeEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="qrcodeButton">
+             <property name="text">
+              <string>qrcode启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <widget class="QLineEdit" name="objtrackEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="objtrackButton">
+             <property name="text">
+              <string>objectTracker启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QLineEdit" name="geotiffEdit"/>
+           </item>
+           <item>
+            <widget class="QPushButton" name="geotiffButton">
+             <property name="text">
+              <string>geotiff启动</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <layout class="QVBoxLayout" name="verticalLayout_11">
+         <item>
+          <widget class="QLineEdit" name="camStartEdit"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="camStartButton">
            <property name="text">
-            <string>server启动</string>
+            <string>刘靖泽用test2cam</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="rplidarButton">
+          <widget class="QPushButton" name="saveButton">
            <property name="text">
-            <string>rplidar启动</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="plannerButton">
-           <property name="text">
-            <string>planner启动</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="slamButton">
-           <property name="text">
-            <string>slam启动</string>
+            <string>保存设置</string>
            </property>
           </widget>
          </item>
         </layout>
-       </item>
-       <item>
-        <widget class="QPushButton" name="hectorConButton">
-         <property name="text">
-          <string>hectorContorller启动</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
-         <item>
-          <widget class="QPushButton" name="geotiffButton">
-           <property name="text">
-            <string>geotiff启动</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="qrcodeButton">
-           <property name="text">
-            <string>qrcode启动</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="objtrackButton">
-           <property name="text">
-            <string>objectTracker启动</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QPushButton" name="camStartButton">
-         <property name="text">
-          <string>刘靖泽用test2cam</string>
-         </property>
-        </widget>
        </item>
       </layout>
-     </item>
-    </layout>
-   </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>428</width>
+     <width>1012</width>
      <height>23</height>
     </rect>
    </property>
