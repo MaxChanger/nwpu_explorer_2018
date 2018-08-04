@@ -1,0 +1,42 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/devel/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_cartographer/install_isolated/include",
+                "/opt/ros/kinetic/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_sc/explorer_controller/explorer_diff_wheel_controller/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_sc/explorer_joy_control/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_sc/explorer_controller/explorer_position_reader/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_vision/explorer_qrcode/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_sc/explorer_robot_hardware/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_sc/explorer_serial_protocol/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_ui/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_vision/flir_one_node/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/hector_unused/hector_costmap/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/hector_unused/hector_elevation_mapping/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/hector_unused/hector_elevation_visualization/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/navigation/hector_exploration_planner/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/map_server/hector_geotiff/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/map_server/hector_map_tools/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/map_server/hector_mapping/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/map_server/hector_marker_drawing/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_vision/hector_object_tracker/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/navigation/hector_path_follower/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/hector_unused/hector_slam_start/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/map_server/hector_worldmodel_msgs/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/package_for_lidar/laser_proc/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_navigation/package_for_lidar/urg_node/include",
+                "/home/sun/WorkSpace/Ros_workspace/catkin_ws/src/nwpu_explorer/explorer_vision/usb_cam/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}

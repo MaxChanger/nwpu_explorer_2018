@@ -1,3 +1,31 @@
+//=================================================================================================
+// Copyright (c) 2012, Stefan Kohlbrecher, TU Darmstadt
+// All rights reserved.
+
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the Simulation, Systems Optimization and Robotics
+//       group, TU Darmstadt nor the names of its contributors may be used to
+//       endorse or promote products derived from this software without
+//       specific prior written permission.
+
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+// ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//=================================================================================================
+
 /*********************************************************************
 * Based heavily on the pose_follower package
 *********************************************************************/
@@ -92,22 +120,28 @@ namespace pose_follower {
   */
 
   //计算速度的命令
-  bool HectorPathFollower::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
+  bool HectorPathFollower::computeVelocityCommands(geometry_msgs::Twist& cmd_vel,bool &isReached)
   {
-    if (global_plan_.size() == 0){  //如果正常运行不会是零
-      ROS_WARN("[In HectorPathFollower::computeVelocityCommands] global_plan_.size() == 0 ");
-      return false;
-    }
 
-    //get the current pose of the robot in the fixed frame 在固定架的机器人的当前位置
+    if (global_plan_.size() == 0){  //如果正常运行不会是零
+        ROS_WARN("[In HectorPathFollower::computeVelocityCommands] global_plan_.size() == 0 ");
+        cmd_vel.linear.x = 0.0;
+        cmd_vel.linear.y = 0.0;
+        cmd_vel.angular.z = 0.31;
+        isReached = true;
+        return false;
+    } 
+
+    //get the current pose of the robot in the fixed frame //在固定架的机器人的当前位置
     tf::Stamped<tf::Pose> robot_pose;
     if(!this->getRobotPose(robot_pose))
     {
-      ROS_ERROR("Can't get robot pose");//如果tf转化超时，容易爆出这个错误
+      ROS_ERROR("Can't get robot pose");//如果tf转化超时，容易出现这个错误
       geometry_msgs::Twist empty_twist;
       cmd_vel = empty_twist;
       return false;
     }
+    
     /**
      * 前面保证得到了机器人的当前位置并且不是空的 正常运行不会进入上边的代码
      * we want to compute a velocity command based on our current waypoint
@@ -116,47 +150,72 @@ namespace pose_follower {
     tf::Stamped<tf::Pose> target_pose;//目标位置
     tf::poseStampedMsgToTF(global_plan_[current_waypoint_], target_pose);
 
+    // /**********************辉巨*********************/
+    // if (last_pose_time_ + ros::Duration(1.4) < ros::Time::now() )//在几秒内没有移动 然后发一个速度0
+    // {
+    //   geometry_msgs::Twist diff_tmp = diff2D(robot_pose, last_pose_);
+
+    //   ROS_WARN("Sun:robot_pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
+    //   ROS_WARN("Sun:last_pose_ %f %f ==> %f", last_pose_.getOrigin().x(), last_pose_.getOrigin().y(), tf::getYaw(last_pose_.getRotation()));
+    //   ROS_WARN("Sun: diff_tmp x:%f y:%f ==> z:%f", diff_tmp.linear.x, diff_tmp.linear.y, diff_tmp.angular.z);
+    //   ROS_WARN("tolerance_trans_:%f ", tolerance_trans_);
+      
+    //   last_pose_ = robot_pose;
+    //   last_pose_time_ = ros::Time::now();
+    //   if (fabs(diff_tmp.linear.x) <= tolerance_trans_ && fabs(diff_tmp.angular.z) <= tolerance_trans_)//0.1
+    //   {
+    //     ROS_ERROR("HectorPathFollower: find forbidden loop and we try to solve it");
+    //     geometry_msgs::Twist empty_twist;
+    //     cmd_vel = empty_twist;
+    //     return true;
+    //   }
+    // }
+    
+    // /**************要删除还是要保留************/
+    
     /**********************MaxChanger*********************/
-    if (last_pose_time_ + ros::Duration(1.4) < ros::Time::now() )
+    if (last_pose_time_ + ros::Duration(1.5) < ros::Time::now() )//在2秒内没有移动 
     {
       geometry_msgs::Twist diff_tmp = diff2D(robot_pose, last_pose_);
       last_pose_ = robot_pose;
       last_pose_time_ = ros::Time::now();
-      if (fabs(diff_tmp.linear.x) <= tolerance_trans_ && 
+      if (fabs(diff_tmp.linear.x) <= tolerance_trans_ &&
           fabs(diff_tmp.linear.y) <= tolerance_trans_ &&
-          fabs(diff_tmp.angular.z) <= tolerance_trans_)//0.1
+          fabs(diff_tmp.angular.z) <= tolerance_trans_ )//0.1
       {
-        ROS_WARN("Sun:robot_pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
-        ROS_WARN("Sun:last_pose_ %f %f ==> %f", last_pose_.getOrigin().x(), last_pose_.getOrigin().y(), tf::getYaw(last_pose_.getRotation()));
-        ROS_WARN("Sun: diff_tmp x:%f y:%f ==> z:%f", diff_tmp.linear.x, diff_tmp.linear.y, diff_tmp.angular.z);
-        ROS_WARN("tolerance_trans_:%f ", tolerance_trans_);        
-        ROS_ERROR("HectorPathFollower: The robot don't move and we try to solve it");
-
+        ROS_WARN("MaxChanger: robot_pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
+        ROS_WARN("MaxChanger: last_pose_ %f %f ==> %f", last_pose_.getOrigin().x(), last_pose_.getOrigin().y(), tf::getYaw(last_pose_.getRotation()));
+        ROS_WARN("MaxChanger: diff_tmp x:%f y:%f ==> z:%f", diff_tmp.linear.x, diff_tmp.linear.y, diff_tmp.angular.z);
+        ROS_WARN("tolerance_trans_:%f ", tolerance_trans_);
         
-        // geometry_msgs::Twist empty_twist;
-        // cmd_vel = empty_twist;
-
-        cmd_vel.linear.x = -cmd_vel.linear.x;
-        cmd_vel.linear.y = -cmd_vel.linear.y;
-        cmd_vel.angular.z = -cmd_vel.angular.z; //既然不动 那么就是卡住了，速度往反方向走
-
+        ROS_ERROR("MaxChanger: HectorPathFollower The robot don't move and we try to solve it\n");
+        // cmd_vel.linear.x = -cmd_vel.linear.x;
+        // cmd_vel.linear.y = -cmd_vel.linear.y;
+        // cmd_vel.angular.z = -cmd_vel.angular.z; //既然不动 那么就是卡住了，速度往反方向走
+        cmd_vel.linear.x = 0;
+        cmd_vel.linear.y = 0;
+        cmd_vel.angular.z = 0.3; //既然不动 那么就是卡住了，速度往反方向走
+        isReached = true;//然后假设到达目的地，重新规划路径
         return true;
       }
     }
-    
-    ROS_WARN("global_plan_.size():%d next_goal_point: %d",global_plan_.size(),current_waypoint_);
+    /**************要删除还是要保留************/
 
-    ROS_INFO("HectorPathFollower: current robot pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
-    ROS_INFO("HectorPathFollower: target robot pose %f %f ==> %f", target_pose.getOrigin().x(), target_pose.getOrigin().y(), tf::getYaw(target_pose.getRotation()));
+
+    ROS_WARN("global_plan_.size():%d next_goal_point: %d",global_plan_.size(),current_waypoint_);
+    ROS_INFO("HectorPathFollower: Current Robot Pose %f %f ==> %f", robot_pose.getOrigin().x(), robot_pose.getOrigin().y(), tf::getYaw(robot_pose.getRotation()));
+    ROS_INFO("HectorPathFollower: Target Robot Pose %f %f ==> %f", target_pose.getOrigin().x(), target_pose.getOrigin().y(), tf::getYaw(target_pose.getRotation()));
    
     //get the difference between the two poses
     geometry_msgs::Twist diff = diff2D(target_pose, robot_pose);//得到目标位置和当前位置的区别
 
-    ROS_INFO("HectorPathFollower: diff %f %f ==> %f", diff.linear.x, diff.linear.y, diff.angular.z);
-    //ROS_DEBUG("HectorPathFollower: diff %f %f ==> %f", diff.linear.x, diff.linear.y, diff.angular.z);
-    //在debug模式下可以输出diff的值
-    
+
+    ROS_INFO("HectorPathFollower: diff2D x:%f y:%f ==> z:%f", diff.linear.x, diff.linear.y, diff.angular.z);
+
+
     geometry_msgs::Twist limit_vel = limitTwist(diff);
+
+    // ROS_INFO("HectorPathFollower: limit_vel x:%f y:%f ==> z:%f", limit_vel.linear.x, limit_vel.linear.y, limit_vel.angular.z);
 
     geometry_msgs::Twist test_vel = limit_vel;
     bool legal_traj = true; 
@@ -195,14 +254,17 @@ namespace pose_follower {
     cmd_vel = test_vel;
 
 
-    int ff_goal_size = 1;
-      if(global_plan_.size() > 150){
+    
+
+
+      int ff_goal_size = 1;
+      if(global_plan_.size() >= 150){
         ff_goal_size = global_plan_.size() - 20 ; 
-      }else if(global_plan_.size() > 80){
+      }else if(global_plan_.size() >= 80){
         ff_goal_size = global_plan_.size() * 0.9; 
-      }else if(global_plan_.size() > 50){
+      }else if(global_plan_.size() >= 50){
         ff_goal_size = global_plan_.size() * 0.8; 
-      }else if(global_plan_.size() > 10){
+      }else if(global_plan_.size() >= 10){
         ff_goal_size = global_plan_.size() - 5; 
       }else if (global_plan_.size() > 5){
         ff_goal_size = global_plan_.size() - 3; 
@@ -210,7 +272,11 @@ namespace pose_follower {
         ff_goal_size = global_plan_.size() - 1;
       }
 
-      ROS_INFO("--->>>>if biggrer than %d I will stop ", ff_goal_size);
+    if(ff_goal_size > 10){
+      ff_goal_size = ( ff_goal_size / 5 ) * 5;
+    }
+
+    ROS_INFO("--->>>>if biggrer than %d I will stop ", ff_goal_size);
 
 
 
@@ -219,8 +285,10 @@ namespace pose_follower {
           fabs(diff.linear.y) <= tolerance_trans_ &&
           fabs(diff.angular.z) <= tolerance_rot_)
     {
-      // if(current_waypoint_ < global_plan_.size() - 5)//-1   -7
-      if( current_waypoint_ < ff_goal_size)
+      
+
+      //if(current_waypoint_ < global_plan_.size() - 5)//-1   -7
+      if(current_waypoint_ < ff_goal_size)
       {
         // if(ff_goal_size < 5){
         //   current_waypoint_ +=1;
@@ -229,12 +297,14 @@ namespace pose_follower {
         // }else{
           current_waypoint_ +=5;//+1  +7
         // }
+        ROS_WARN("current_waypoint_: %d  ff_goal_size: %d" , current_waypoint_,ff_goal_size);
         tf::poseStampedMsgToTF(global_plan_[current_waypoint_], target_pose);
         diff = diff2D(target_pose, robot_pose);
       }
       else
       {
-        ROS_INFO("Reached goal: %d", current_waypoint_);
+        ROS_WARN("Reached goal: %d", current_waypoint_);
+        isReached = true;
         in_goal_position = true;
         break;
       }
@@ -255,7 +325,6 @@ namespace pose_follower {
       geometry_msgs::Twist empty_twist;
       cmd_vel = empty_twist;
     }
-
     return true;
   }
 
@@ -293,12 +362,17 @@ namespace pose_follower {
     return false;
   }
 
-  //pose1和pose2之间的不同 pose1: target_pose 目标位置, pose2: robot_pose 当前位置
+  //pose1和pose2之间的不同    pose1: target_pose 目标位置, pose2: robot_pose 当前位置
   geometry_msgs::Twist HectorPathFollower::diff2D(const tf::Pose& pose1, const tf::Pose& pose2)
   {
-
     geometry_msgs::Twist res;
-    
+
+    // Transform inverse() const
+    // { 
+    //     Matrix3x3 inv = m_basis.transpose();
+    //     return Transform(inv, inv * -m_origin);
+    // } inverse的定义
+
     tf::Pose diff = pose2.inverse() * pose1;
     res.linear.x = diff.getOrigin().x();
     res.linear.y = diff.getOrigin().y();

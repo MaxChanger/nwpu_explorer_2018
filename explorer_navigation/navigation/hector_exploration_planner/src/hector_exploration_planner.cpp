@@ -1,3 +1,4 @@
+
 /**
  * 该软件包提供了一个规划器，可以为探索未知环境生成目标和相关路径。 该包不提供ROS节点，而是可以在ROS节点内部使用的库
  * 可以调用该库中的函数 
@@ -9,6 +10,7 @@
  *  static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;//内切 膨胀障碍
  *  static const unsigned char FREE_SPACE = 0;
  *  }
+ * 
  */
 
 #include <hector_exploration_planner/hector_exploration_planner.h>
@@ -22,8 +24,8 @@
 #include <Eigen/Geometry>
 #include <hector_exploration_planner/ExplorationPlannerConfig.h>
 
-#define STRAIGHT_COST 100//120   //直接成本 白工控机写的120 --100
-#define DIAGONAL_COST 170//156   //对角线成本 白工控机写的156 --141
+#define STRAIGHT_COST 100   //120   //直接成本 白工控机写的120 --100
+#define DIAGONAL_COST 170   //156   //对角线成本 白工控机写的156 --141
 
 //#define STRAIGHT_COST 3
 //#define DIAGONAL_COST 4
@@ -44,6 +46,9 @@ HectorExplorationPlanner::~HectorExplorationPlanner()
   this->deleteMapData();
 }//析构函数 最后调用清除数据内存空间
 
+
+
+
 HectorExplorationPlanner::HectorExplorationPlanner(std::string name, costmap_2d::Costmap2DROS *costmap_ros_in) :
 costmap_ros_(NULL), initialized_(false) 
 {
@@ -51,6 +56,9 @@ costmap_ros_(NULL), initialized_(false)
   //把exploration_node里边的costmap_2d_ros_传入给costmap_ros_in
   //然后costmap_ros_in后来又给了costmap_ros_（这个量是在hector_exploration_planner里边的一个量）
 }
+
+
+
 
 void HectorExplorationPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros_in)
 {
@@ -74,8 +82,7 @@ void HectorExplorationPlanner::initialize(std::string name, costmap_2d::Costmap2
     return;//返回 不会执行下面步骤
   }
 
-  ROS_INFO("[hector_exploration_planner] Initializing HectorExplorationPlanner");
-  //正常情况下会提示正在初始化
+  ROS_INFO("[hector_exploration_planner] Initializing Hector Exploration Planner"); //正常情况下会提示正在初始化
 
   // initialize costmaps    初始化代价地图
   this->costmap_ros_ = costmap_ros_in;
@@ -90,10 +97,11 @@ void HectorExplorationPlanner::initialize(std::string name, costmap_2d::Costmap2
   observation_pose_pub_ = private_nh_.advertise<geometry_msgs::PoseStamped>("observation_pose", 1, true);//观察姿势
 
   goal_pose_pub_ = private_nh_.advertise<geometry_msgs::PoseStamped>("goal_pose", 1, true);
-  // 发布目标位置等可视化信息  在rviz中可以看到
+
+  
+  ///发布目标位置等可视化信息  在rviz中可以看到
 
   ignore_all_ = false;
- 
   
   dyn_rec_server_.reset(new dynamic_reconfigure::Server<hector_exploration_planner::ExplorationPlannerConfig>(ros::NodeHandle("~/hector_exploration_planner")));//动态调参
 
@@ -151,7 +159,6 @@ bool HectorExplorationPlanner::makePlan(const geometry_msgs::PoseStamped &start,
   {
       ROS_ERROR("Trying to plan with invalid quaternion, this shouldn't be done anymore, but we'll start exploration for now.");
       // 尝试用无效四元数进行规划，这不应该再做了，但是我们现在就开始探索。
-
       return doExploration(start,plan);
   }
 
@@ -217,11 +224,9 @@ bool HectorExplorationPlanner::makePlan(const geometry_msgs::PoseStamped &start,
       last_pose = plan[plan.size()-1];
       last_pose.pose.orientation = second_last_pose.pose.orientation;
       plan[plan.size()-1] = last_pose;
-
-
   }
 
-  ROS_INFO("[hector_exploration_planner] planning: plan has been found! plansize: %u ", (unsigned int)plan.size());
+  ROS_INFO("[hector_exploration_planner] planning: plan has been found! plan.size: %u ", (unsigned int)plan.size());
   return true;
 }
 
@@ -258,17 +263,14 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
       //找到靠近路径的边界
       //以走过的路径为基准点 进行下一步的探索
 
-      if (!frontiers_found)
-      {
+      if (!frontiers_found){
         ROS_WARN("Close Exploration desired, but no frontiers found. Falling back to normal exploration!");
         //想要进行接近与原来路径的探索 然而失败之后就返回正常的探索模式 
         //需要进行严密勘探，但没有发现边界。落回正常的探索！ 
         frontiers_found = findFrontiers(goals);
       }
 
-    }
-    else
-    {
+    }else{
       frontiers_found = findFrontiers(goals);//这种是没有依靠原路径的搜索
     }
 
@@ -286,16 +288,16 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
     }
     
   
-
     // make plan
-    if(!buildexploration_trans_array_(start,goals,true))
+    if(!buildexploration_trans_array_(start,goals,true)) // 生产了可到达的点goals
     {
       return false;
     }
-    ROS_ERROR("[Sun_exploration_planner] position :\n x:%f \t y:%f \t z:%f \n" ,
+
+    ROS_ERROR("[Sun_exploration_planner] current position :\n x:%f \t y:%f \t z:%f \n" ,
               start.pose.position.x ,start.pose.position.y ,start.pose.position.z);
 
-    // for(unsigned int i = 0; i < goals.size(); ++i)// 输出所有找到的goals 但是路径只是去其中一个
+    // for(unsigned int i = 0; i < goals.size(); ++i)// 输出所有找到的goals 但是路径只是去其中一个goal
     // {
     //       ROS_ERROR("[Sun_exploration_planner] goals[%d] :\n x:%f \t y:%f \t z:%f " ,
     //         i, goals[i].pose.position.x ,goals[i].pose.position.y ,goals[i].pose.position.z);
@@ -313,6 +315,19 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
       return doInnerExploration(start,plan);
     }
 
+
+    // 限定在第一种探索模式下 plan 的长度
+    if( last_mode_ == FRONTIER_EXPLORE && plan.size() > 50){
+      while(plan.size() > 50){
+        plan.pop_back();
+      }
+    }
+
+
+
+
+
+
     // update previous goal 更新以前的目标
     if(!plan.empty())//加入现在已经有了移动计划 计划不是空 那么进入下面语句
     {
@@ -324,12 +339,14 @@ bool HectorExplorationPlanner::doExploration(const geometry_msgs::PoseStamped &s
 
 
 
-    for(unsigned int i = 0; i < plan.size(); ++i)
-    {
-      ROS_ERROR("[Sun_exploration_planner] plan[%d] :\n x:%f \t y:%f \t z:%f " ,
+    // for(unsigned int i = 0; i < plan.size(); ++i) // 循环输出所有路径，其实看起来没有什么意义
+    // {
+    //       ROS_ERROR("[Sun_exploration_planner] plan_route_point[%d] :\n x:%f \t y:%f \t z:%f " ,
+    //         i, plan[i].pose.position.x ,plan[i].pose.position.y ,plan[i].pose.position.z);
+    // }
+    int i = plan.size()-1;
+    ROS_ERROR("[Sun_exploration_planner] plan_route_point[%d] :\n x:%f \t y:%f \t z:%f " ,
             i, plan[i].pose.position.x ,plan[i].pose.position.y ,plan[i].pose.position.z);
-    }
-
     
     //这条信息被输出 输出的是路线的长度（也就是有几个栅格点）
     ROS_INFO("[hector_exploration_planner] exploration: plan to a frontier has been found! plansize: %u", (unsigned int)plan.size());
@@ -427,7 +444,7 @@ bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamp
   }
   if(!getTrajectory(start,goals,plan))
   {
-    ROS_WARN("[hector_exploration_planner] inner-exploration: could not plan to inner-frontier. exploration failed!");
+    ROS_WARN("[hector_exploration_planner] inner-exploration: get plan failed in doInnerExploration");
     return false;
   }
 
@@ -436,7 +453,7 @@ bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamp
   int plansize = plan.size() - 5;
   if(plansize > 0 )
   {
-    plan.resize(plansize);
+    plan.resize(plansize);///////////////////resize 
   }
 
   // update previous goal
@@ -458,8 +475,7 @@ bool HectorExplorationPlanner::doInnerExploration(const geometry_msgs::PoseStamp
 
 bool HectorExplorationPlanner::getObservationPose(const geometry_msgs::PoseStamped& observation_pose, const double desired_distance, geometry_msgs::PoseStamped& new_observation_pose)
 {
-  // We call this from inside the planner, so map data setup and reset already happened 
-  // 我们从计划者内部调用它，所以地图数据的设置和重置已经发生了。
+  // We call this from inside the planner, so map data setup and reset already happened 我们从计划者内部调用它，所以地图数据的设置和重置已经发生了。
   //this->setupMapData();
   //resetMaps();
 
@@ -630,7 +646,7 @@ bool HectorExplorationPlanner::getObservationPose(const geometry_msgs::PoseStamp
 
 
 
-//做选择的探索
+//做选择的探索 没有用到
 bool HectorExplorationPlanner::doAlternativeExploration(const geometry_msgs::PoseStamped &start, std::vector<geometry_msgs::PoseStamped> &plan, std::vector<geometry_msgs::PoseStamped> &oldplan)
 {
   ROS_INFO("[hector_exploration_planner] alternative exploration: starting alternative exploration");
@@ -699,7 +715,7 @@ float HectorExplorationPlanner::angleDifferenceWall(const geometry_msgs::PoseSta
   return both_angle;
 }
 
-
+// 貌似也没用到
 bool HectorExplorationPlanner::exploreWalls(const geometry_msgs::PoseStamped &start, std::vector<geometry_msgs::PoseStamped> &plan){
 
   //@TODO: Properly set this parameters
@@ -889,7 +905,6 @@ bool HectorExplorationPlanner::exploreWalls(const geometry_msgs::PoseStamped &st
 }
 
 
-
 void HectorExplorationPlanner::setupMapData()
 {
 
@@ -899,13 +914,13 @@ void HectorExplorationPlanner::setupMapData()
    * 否则 清空代价地图数据 得到一个代价地图的copy
    */
 
-#ifdef COSTMAP_2D_LAYERED_COSTMAP_H_
-  costmap_ = costmap_ros_->getCostmap();
-#else
-  if (costmap_) delete costmap_;
-  costmap_ = new costmap_2d::Costmap2D;
-  costmap_ros_->getCostmapCopy(*costmap_);
-#endif
+  #ifdef COSTMAP_2D_LAYERED_COSTMAP_H_
+    costmap_ = costmap_ros_->getCostmap();
+  #else
+    if (costmap_) delete costmap_;
+    costmap_ = new costmap_2d::Costmap2D;
+    costmap_ros_->getCostmapCopy(*costmap_);
+  #endif
 
   //Below code can be used to guarantee start pose is cleared. Somewhat risky.
   //下面的代码可以用来保证开始姿势被清除。有些冒险的。
@@ -1019,7 +1034,7 @@ bool HectorExplorationPlanner::buildexploration_trans_array_(const geometry_msgs
       continue;
     }
 
-    int goal_point = costmap_->getIndex(mx,my);//行列转化为第几个
+    int goal_point = costmap_->getIndex(mx,my);//行列转化为第几个 索引
 
     // Ignore free goal for the moment, check after iterating over all goals if there is not valid one at all 暂时忽略自由目标，如果没有有效目标，检查所有目标后迭代。
 
@@ -1323,7 +1338,11 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
     return true;
   }
 
-  while(!is_goal_array_[currentPoint])
+  // 这个寻找plan的路径 是从start开始，然后一直循环，找当前点八邻域代价值最小的点，然后不停地+1，直到遇到一个点不满足
+  // while(!is_goal_array_[currentPoint]) ————— 也就是 当到达的点是goal的时候，plan的不断push结束 - 找到exploration_plan
+
+
+  while(!is_goal_array_[currentPoint])//当当前点不是障碍物点的时候 直到碰到一个goal点 while循环结束
   {//这是个while循环 没有到达目标点就一直生成trajPoint(轨迹点)数据 然后压入plan队列
     int thisDelta;
     int adjacentPoints[8];//八邻域
@@ -1331,16 +1350,12 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
 
     int maxDelta = 0;
 
-    /**
-     * 选择的nextPonit是当前点的八邻域里边 ××（thisDelta）最大的一个点
-     * 
-     */
-    for(int i = 0; i < 8; ++i)
-    {
-      if(isFree(adjacentPoints[i]))
-      {
+    // 选择的nextPonit是当前点的八邻域里边 ××（thisDelta）最大的一个点
+    for(int i = 0; i < 8; ++i){
+
+      if(isFree(adjacentPoints[i])){
+
         thisDelta = exploration_trans_array_[currentPoint] - exploration_trans_array_[adjacentPoints[i]];
-        
         if(thisDelta > maxDelta)
         {
           maxDelta = thisDelta;
@@ -1349,10 +1364,12 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
       }
     }
 
-    // This happens when there is no valid exploration transform data at the start point for example 例如，在起始点没有有效的勘探转换数据时会发生这种情况
+    // This happens when there is no valid exploration transform data at the start point for example 
+    // 例如，在起始点没有有效的勘探转换数据时会发生这种情况
     if(maxDelta == 0)
     {
-      ROS_WARN("[hector_exploration_planner] No path to the goal could be found by following gradient!");//没有路径的目标可以通过下面的梯度找到！
+      ROS_WARN("[hector_exploration_planner] In getTrajectory: No path to the goal could be found by following gradient!");
+      //没有路径的目标可以通过下面的梯度找到！
       return false;
     }
 
@@ -1380,6 +1397,7 @@ bool HectorExplorationPlanner::getTrajectory(const geometry_msgs::PoseStamped &s
     currentPoint = nextPoint;//把下一个点当做当前点进行迭代
     maxDelta = 0;
   }//while循环结束 没有到达目的地就一直生成trajPoint数据 然后压入plan
+
 
   ROS_DEBUG("[hector_exploration_planner] END: getTrajectory. Plansize %u", (unsigned int)plan.size());
   return !plan.empty();

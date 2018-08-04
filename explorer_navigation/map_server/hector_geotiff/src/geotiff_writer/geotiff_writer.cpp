@@ -100,7 +100,7 @@ void GeotiffWriter::setUseUtcTimeSuffix(bool useSuffix)
 
 bool GeotiffWriter::setupTransforms(const nav_msgs::OccupancyGrid& map)
 {
-  //ROS_ERROR("In geotiff_writer.      In setupTransforms");
+
   resolution = static_cast<float>(map.info.resolution);
   origin = Eigen::Vector2f(map.info.origin.position.x, map.info.origin.position.y);
 
@@ -174,7 +174,7 @@ bool GeotiffWriter::setupTransforms(const nav_msgs::OccupancyGrid& map)
   map_draw_font_.setPixelSize(6*resolutionFactor);
 
   if (useCheckerboardCache){
-  /////ROS_INFO("In geotiff_writer.          ===great=======@@@@@!!!!");
+    //ROS_INFO("In geotiff_writer.          ===great=======@@@@@!!!!");
     if ((cached_map_meta_data_.height != map.info.height) ||
         (cached_map_meta_data_.width != map.info.width) ||
         (cached_map_meta_data_.resolution = map.info.resolution)){
@@ -184,7 +184,7 @@ bool GeotiffWriter::setupTransforms(const nav_msgs::OccupancyGrid& map)
       Eigen::Vector2f img_size (Eigen::Vector2f(map.info.width,map.info.height)* resolutionFactorf + (rightBottomMarginMeters + leftTopMarginMeters)*pixelsPerGeoTiffMeter );
       checkerboard_cache = QImage(img_size.y(),img_size.x(), QImage::Format_RGB32);
 
-      //////ROS_INFO("In geotiff_writer.                ===great===========!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    //ROS_INFO("In geotiff_writer.                ===great===========!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
       QPainter qPainter(&image);
       transformPainterToImgCoords(qPainter);
@@ -258,7 +258,7 @@ void GeotiffWriter::drawBackgroundCheckerboard()//绘制背景棋盘
   if (!useCheckerboardCache){
     if((&image) != NULL)
     {
-      ROS_ERROR("In geotiff_writer.           yes==========");
+      ROS_ERROR("In geotiff_writer drawBackgroundCheckerboard.------> Yes");
     }
     QPainter qPainter(&image);
     ROS_INFO("In geotiff_writer.    After QPainter qPainter(&image);");
@@ -606,7 +606,7 @@ void GeotiffWriter::writeGeotiffImage()
     //Writing image with file /home/catkin_slam/maps/Explorer_geotiff_mapper_two_13:13:55.tif failed with error Device not writable
     //
   }else{
-    ROS_INFO("Successfully wrote geotiff to %s", complete_file_string.c_str());
+    ROS_WARN("Successfully wrote geotiff to %s", complete_file_string.c_str());
   }
 }
 

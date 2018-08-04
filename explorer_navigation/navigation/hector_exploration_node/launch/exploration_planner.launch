@@ -22,11 +22,11 @@
     但是 两个同时打开不方便调试
     controller主要是对地盘发送速度，这个刷新频率很高，很容易把exploration_planner提示的规划信息刷新掉
   -->
-  
+
   <!-- 打开这个记录路径的节点 trajectory 用在了 inner explorer mode -->
   <arg name="trajectory_source_frame_name" default="/base_link"/>
   <arg name="trajectory_update_rate" default="4"/><!--[hz] -->
-  <arg name="trajectory_publish_rate" default="0.25"/><!--[hz] -->
+  <arg name="trajectory_publish_rate" default="2"/><!--[hz] -->
 
   <node pkg="hector_trajectory_server" type="hector_trajectory_server" name="hector_trajectory_server" output="screen">
 
@@ -35,5 +35,6 @@
     <param name="trajectory_update_rate" type="double" value="$(arg trajectory_update_rate)" />
     <param name="trajectory_publish_rate" type="double" value="$(arg trajectory_publish_rate)" />
   </node>
+
   
 </launch>
