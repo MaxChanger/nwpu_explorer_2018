@@ -1,0 +1,12 @@
+<library path="lib/libhector_worldmodel_geotiff_plugins">
+  <class name="hector_worldmodel_geotiff_plugins/VictimMapWriter" type="hector_worldmodel_geotiff_plugins::VictimMapWriter" base_class_type="hector_geotiff::MapWriterPluginInterface">
+    <description>
+      This is a MapWriter plugin that draws victims from the worldmodel in the map.
+    </description>
+  </class>
+  <class name="hector_worldmodel_geotiff_plugins/QRCodeMapWriter" type="hector_worldmodel_geotiff_plugins::QRCodeMapWriter" base_class_type="hector_geotiff::MapWriterPluginInterface">
+    <description>
+      This is a MapWriter plugin that draws QRCode detections from the worldmodel in the map.
+    </description>
+  </class>
+</library>
