@@ -153,8 +153,11 @@ public:
       int x0 = beginMap[0];
       int y0 = beginMap[1];
 
-      int sizeX = map_ptr_->info.width;
-      int sizeY = map_ptr_->info.height;
+      // int sizeX = map_ptr_->info.width;
+      // int sizeY = map_ptr_->info.height;
+
+      int sizeX = map_ptr_->info.height;
+      int sizeY = map_ptr_->info.width;
 
       //check if beam start point is inside map, cancel update if this is not the case
       if ((x0 >= sizeX) || (y0 >= sizeY)) {
@@ -168,7 +171,8 @@ public:
       std::cout << " x: "<< x1 << " y: " << y1 << std::endl;
 
       //check if beam end point is inside map, cancel update if this is not the case
-      if ((x1 >= sizeX) || (y1 >= sizeY)) {
+      if ((x1 >= sizeX) || (y1 >= sizeY))
+       {
         ROS_ERROR("x1 : %d y1 : %d",x1,y1);
         return -1.0f;
       }
