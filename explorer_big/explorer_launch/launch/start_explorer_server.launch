@@ -1,0 +1,8 @@
+<?xml version="1.0"?> 
+<!-- 以下为必须在工控机上运行的结点 -->
+<launch>
+    <include file = "$(find explorer_launch)/launch/server/start_robot_driver.launch"/>
+    <include file = "$(find explorer_launch)/launch/server/start_robot_hardware.launch"/>
+
+    <!--include file = "$(find explorer_launch)/launch/server/start_robot_moveit.launch"/-->
+</launch>

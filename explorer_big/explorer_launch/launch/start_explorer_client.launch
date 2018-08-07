@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!-- 这个是启用网桥链接工控机后使用的,在外部电脑上启用的launch -->
+<launch>
+    <include file = "$(find explorer_launch)/launch/server/start_robot_moveit.launch"/>
+    <include file = "$(find explorer_launch)/launch/client/start_robot_joy.launch"/>
+      <include file = "$(find explorer_launch)/launch/client/start_robot_sensor.launch"/>  
+</launch>
