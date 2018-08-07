@@ -1,0 +1,12 @@
+<library path="lib/libexplorer_vice_wheel_controller">
+
+  <class 
+  name="explorer_vice_wheel_controller/ViceWheelController" 
+  type="explorer_vice_wheel_controller::ViceWheelController" 
+  base_class_type="controller_interface::ControllerBase">
+    <description>
+      The vice wheel controller
+    </description>
+  </class>
+
+</library>

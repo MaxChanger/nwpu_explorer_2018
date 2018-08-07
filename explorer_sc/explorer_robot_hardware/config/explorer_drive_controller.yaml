@@ -1,0 +1,23 @@
+
+#整个车的参数的设置地点,一般在换车之后需要进行修改,在hardware处使用.
+explorer_drive_controller:
+    type: "explorer_diff_drive_controller/DiffDriveController"
+    left_wheel:
+        - left_up_wheel_base_joint
+        - left_down_wheel_base_joint
+    right_wheel:
+        - right_up_wheel_base_joint
+        - right_down_wheel_base_joint
+    #wheel_separation: 0.8 #0.54 #0.8
+    #wheel_radius: 1.2 #0.07 #1.2 #0.1的z是0.38
+    #cmd_vel_timeout: 0.5
+    #base_frame_id: base_link
+    #enable_odom_tf: false
+    #wheel_radius_multiplier: 1.0
+
+    wheel_separation: 0.8 #0.54 #0.8
+    wheel_radius: 1.5 #0.07 #1.2 #0.1的z是0.38
+    cmd_vel_timeout: 0.5
+    base_frame_id: base_link
+    enable_odom_tf: false
+    wheel_radius_multiplier: 1.0
