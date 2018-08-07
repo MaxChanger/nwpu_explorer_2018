@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "*.ipp": "cpp",
-        "*.tcc": "cpp",
-        "slist": "cpp"
-    }
-}

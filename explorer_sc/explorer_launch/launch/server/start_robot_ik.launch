@@ -1,0 +1,5 @@
+﻿<?xml version="1.0"?>
+<!-- 启动机械臂ik解算结点 -->
+<launch>
+	<node name="explorer_ik_switcher" pkg="explorer_ik_switcher" type="explorer_ik_switcher.py"/>
+</launch>

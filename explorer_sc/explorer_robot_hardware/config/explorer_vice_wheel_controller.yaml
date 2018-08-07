@@ -1,0 +1,14 @@
+
+explorer_vice_wheel_controller:
+    type: "explorer_vice_wheel_controller/ViceWheelController"
+    front_vice_wheel:
+        - left_up_fin_base_joint
+        - right_up_fin_base_joint
+    back_vice_wheel:
+        - left_down_fin_base_joint
+        - right_down_fin_base_joint
+    angular_multiplier: 0.05
+    time_out: 0.1
+    front_vice_whell_position: -1.5
+    back_vice_whell_position: 1.5
+    max_speed: 1

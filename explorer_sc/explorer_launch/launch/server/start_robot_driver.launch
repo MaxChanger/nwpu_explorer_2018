@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- 打开串口通讯相关的结点 -->
+<launch>
+	<node name="explorer_driver" pkg="explorer_driver" type="explorer_driver"/>
+	 <node name="explorer_serial_node" pkg="explorer_serial_protocol" type="explorer_serial_protocol_node" output="screen">
+     <rosparam param="serial_file_name">/dev/explorer_serial</rosparam>
+     </node>
+     <!--node name="explorer_serial_protocol_two_node" pkg="explorer_serial_protocol_two" type="explorer_serial_protocol_two_node" output="screen">
+     <rosparam param= "serial_file_name_two">/dev/ttyUSB2</rosparam>
+     </node-->
+</launch>
